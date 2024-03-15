@@ -1,0 +1,21 @@
+
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" class="nav" opened>
+    <mat-nav-list>
+      <a mat-list-item routerLink="updatefunder">
+        <span class="custom-drawer"><mat-icon>account_circle</mat-icon> Profile</span>
+      </a>      
+      <a mat-list-item routerLink="/header/funderprofile/fundedstudents">
+        <span class="custom-drawer">
+          <mat-icon>persons</mat-icon> Students Funded
+        </span>
+      </a>
+      <a mat-list-item (click)="logout()">
+        <span class="custom-drawer"><mat-icon>logout</mat-icon> Logout</span>
+      </a>
+    </mat-nav-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+    height: 600px;
+    width: 250px;
+    top: 19px;
+    background-color: rgb(118, 162, 243);
+    background-image: url('./assets/images/menu.jpeg');
+    background-size: cover;
+}
+
+.mat-mdc-text-field-wrapper {
+    width: 400px;
+}
+

@@ -1,0 +1,44 @@
+.example-card {
+  width: 30%;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.example-form-field {
+  width: 200px;
+}
+
+.search {
+  padding-top: 20px;
+  margin-left: 10px;
+}
+
+.search-input {
+  width: 300px;
+  margin-right: 20px;
+}
+
+.students-list {
+  display: flex;
+  margin: 10px;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+img {
+  background-size: cover;
+}
+
+button {
+  margin-left: 10px;
+  background-color: rgb(226, 220, 247);
+}
+
+.container {
+  background-color: rgb(209, 230, 243);
+}
+
+.load-more {
+  text-align: center;
+  margin-left: 45%;
+}

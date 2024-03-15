@@ -1,0 +1,49 @@
+.login {
+  display: flex;
+  justify-content: center;
+  width: 500px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-left: 450px;
+}
+
+.form-group {
+  padding-bottom: 20px;
+}
+
+.register-link {
+  padding-top: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #d8d7d7;
+  background-color: #f1f1f1;
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+}
+
+.error {
+  color: red;
+}
+
+.space {
+  height: 100px;
+}
+.loginbg, .space{
+  background-image: url('/assets/images/termsbc.jpg');
+  background-size: cover;
+}
