@@ -12,22 +12,21 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  invalidLogin: boolean = false;
-
   constructor(private loginService: LoginService, private router: Router) { }
 
   onSubmit(): void {
-    this.loginService.login(this.email, this.password).subscribe(
-      (response) => {
+    this.loginService.login(this.email, this.password).subscribe({
+      next: (response) => {
         this.loginService.loggedin(true, response.token);
         this.loginService.getUser();
         this.loginService.getuserEmail()
         this.router.navigate(['header/home'])
       },
-      (error) => {
+      error: (error) => {
         Swal.fire('Oops...', 'Something went wrong!, Please check your credentials', 'error');
       }
+    }
     )
-    
+
   }
 }

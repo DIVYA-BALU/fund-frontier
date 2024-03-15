@@ -32,7 +32,7 @@
           (registerForm.controls['email'].dirty ||
             registerForm.controls['email'].touched)
         " class="error">
-        Email is required
+        Valid Email is required
       </div>
     </div>
 
@@ -64,6 +64,6 @@
       </div>
     </div>
 
-    <button type="submit">Submit</button>
+    <button type="submit" [disabled]="registerForm.invalid">Submit</button>
   </form>
 </div>
