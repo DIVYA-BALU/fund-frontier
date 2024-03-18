@@ -14,15 +14,27 @@ export class StudentregistrationComponent {
 
   applicationForm!: FormGroup;
 
-  id: string = '';
   profile!: File;
   aadhar!: File;
   income!: File;
   fee!: File;
   idcard!: File;
+  today: Date = new Date();
 
-  @ViewChild('fileUpload', { static: false })
-  fileUpload!: ElementRef;
+  @ViewChild('aadhar')
+  aadharproof!: ElementRef;
+
+  @ViewChild('income')
+  incomeproof!: ElementRef;
+
+  @ViewChild('studentid')
+  idcardproof!: ElementRef;
+
+  @ViewChild('fee')
+  feeproof!: ElementRef;
+
+  @ViewChild('profile')
+  profileproof!: ElementRef;
 
   constructor(
     private studentService: StudentService,
@@ -107,7 +119,7 @@ export class StudentregistrationComponent {
 
   formdata: FormData = new FormData();
 
-  onSubmit() {
+  onSubmit() {    
 
     this.formdata.append('profilePhoto', this.profile),
       this.formdata.append('firstName', this.applicationForm.value.firstName),
@@ -126,6 +138,7 @@ export class StudentregistrationComponent {
       this.formdata.append('aadharCardProof', this.aadhar),
       this.formdata.append('incomeProof', this.income),
       this.formdata.append('collegeName', this.applicationForm.controls['collegeName'].value),
+      this.formdata.append('yearOfStudy',this.applicationForm.value.yearOfStudy),
       this.formdata.append('course', this.applicationForm.controls['course'].value),
       this.formdata.append('studentIdentityProof', this.idcard),
       this.formdata.append('studentId', this.applicationForm.controls['studentId'].value),
@@ -153,16 +166,24 @@ export class StudentregistrationComponent {
 
   fileValidation(file: File, name: string) {
 
-    if (file) {
+    const id = this.applicationForm.value.studentId;
 
-      if (file.name !== (`${this.id}-${name}.jpg` || `${this.id}-${name}.jpeg` || `${this.id}-${name}.png`)) {
-        Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');
-        if (this.fileUpload && this.fileUpload.nativeElement) {
-          const input = this.fileUpload.nativeElement as HTMLInputElement;
-          input.value = '';
-        }
+    if (file.name !== (`${id}-${name}.jpg` || `${id}-${name}.jpeg` || `${id}-${name}.png`)) {
+      Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');
+
+      if (name === 'AADHAR') {
+        this.aadharproof.nativeElement.value = '';
+      } else if (name === 'INCOME') {
+        this.incomeproof.nativeElement.value = '';
+      } else if (name === 'PROFILE') {
+        this.profileproof.nativeElement.value = '';
+      } else if (name === 'IDCARD') {
+        this.idcardproof.nativeElement.value = '';
+      } else if (name === 'FEE') {
+        this.feeproof.nativeElement.value = '';
       }
-    }
-  }
 
+    }
+
+  }
 }

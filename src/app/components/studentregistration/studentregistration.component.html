@@ -1,30 +1,29 @@
-<mat-stepper linear=false #stepper class="custom-stepper">
+<mat-stepper linear #stepper class="custom-stepper">
   <mat-step [stepControl]="applicationForm" class="custom-step">
     <form [formGroup]="applicationForm">
       <ng-template matStepLabel>Personal Details</ng-template>
-      <div>
-        <mat-form-field class="form-field">
-            <mat-label>First Name</mat-label>
-            <input matInput placeholder="John" formControlName="firstName" required>
-        </mat-form-field>
-      </div>
 
-      <mat-form-field class="form-field">
+      <mat-form-field class="form-field first" appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="John" formControlName="firstName" required>
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Last Name</mat-label>
         <input matInput placeholder="Doe" formControlName="lastName" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput placeholder="divya@gmail.com" formControlName="email" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Phone Number</mat-label>
         <input matInput placeholder="7358871876" formControlName="phoneNumber" required>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="form-field" appearance="outline">
         <mat-label>Select an option</mat-label>
         <mat-select formControlName="gender">
           <mat-option value="Male">Male</mat-option>
@@ -33,56 +32,56 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Country of Birth</mat-label>
         <input matInput placeholder="India" formControlName="countryOfBirth" required>
       </mat-form-field>
 
-      <mat-form-field class="form-input">
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Date of birth</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+        <input matInput [matDatepicker]="picker" [max]="today" formControlName="dateOfBirth" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Door No</mat-label>
         <input matInput placeholder="123" formControlName="address" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>City</mat-label>
         <input matInput placeholder="Chennai" formControlName="city" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>state</mat-label>
         <input matInput placeholder="Tamil Nadu" formControlName="state" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Zip Code</mat-label>
         <input matInput placeholder="641 653" formControlName="zipCode" required>
       </mat-form-field>
 
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext class="button">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="applicationForm" label="Academic Details" class="custom-step">
     <form [formGroup]="applicationForm">
-      <mat-form-field>
+      <mat-form-field class="form-field first" appearance="outline">
         <mat-label>School of Study</mat-label>
         <input matInput formControlName="school" placeholder="St Mary's" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>College Name</mat-label>
         <input matInput placeholder="CIT" formControlName="collegeName" required>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="form-field" appearance="outline">
         <mat-label>Select an option</mat-label>
         <mat-select formControlName="yearOfStudy">
           <mat-option value="I">I</mat-option>
@@ -93,74 +92,78 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Course</mat-label>
         <input matInput placeholder="CS" formControlName="course" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Student ID</mat-label>
-        <input matInput placeholder="201CS154" [(ngModel)]="id" formControlName="studentId" required>
+        <input matInput placeholder="201CS154" formControlName="studentId" required>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Fund Required in Rupees</mat-label>
         <input matInput placeholder="100000" formControlName="fundRequired" required>
       </mat-form-field>
 
-      <mat-form-field class="form-input">
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>End Date to pay fee</mat-label>
-        <input matInput [matDatepicker]="picker1" formControlName="endDate" />
+        <input matInput [matDatepicker]="picker1" [min]="today" formControlName="endDate" />
         <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
 
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperPrevious class="button">Back</button>
+        <button mat-button matStepperNext class="button">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="applicationForm" (ngSubmit)="onSubmit()" class="custom-step">
     <ng-template matStepLabel>Proofs</ng-template>
     <form [formGroup]="applicationForm">
-      <div class="form-input">
-        <label> Aadhar proof</label>
-        <input type="file" formControlName="aadharCardProof" (change)="setAadhar($event)" required />
+      <div class="file-input form-field">
+        <label> Aadhar proof (Ex. 21CS-AADHAR)</label>
+        <br>
+        <input type="file" formControlName="aadharCardProof" (change)="setAadhar($event)" required #aadhar />
       </div>
-      <hr />
-      <div>
-        <label>Income Proof</label>
-        <input type="file" class="file-input" formControlName="incomeProof" (change)="setIncome($event)" />
-      </div>
-      <hr>
-      <div>
-        <label>Student Id Proof</label>
-        <input type="file" class="file-input" formControlName="studentIdentityProof" (change)="setIdcard($event)" />
-      </div>
-      <hr>
-      <div>
-        <label>Fee details Proof</label>
-        <input type="file" class="file-input" formControlName="feeDetails" (change)="setFee($event)" />
-      </div>
-      <hr>
-      <div>
-        <label>Profile Photo</label>
-        <input type="file" class="file-input" formControlName="profilePhoto" (change)="setProfile($event)"
-          #fileUpload />
-      </div>
-      <hr>
 
-      <mat-form-field class="example-full-width">
+      <div class="file-input form-field">
+        <label>Income Proof (Ex. 21CS-INCOME)</label>
+        <br>
+        <input type="file" formControlName="incomeProof" (change)="setIncome($event)" required #income />
+      </div>
+
+      <div class="file-input form-field">
+        <label>Student Id Proof (Ex. 21CS-IDCARD)</label>
+        <br>
+        <input type="file" formControlName="studentIdentityProof" (change)="setIdcard($event)" required #studentid />
+      </div>
+
+      <div class="file-input form-field">
+        <label>Fee details Proof (Ex. 21CS-FEE)</label>
+        <br>
+        <input type="file" formControlName="feeDetails" (change)="setFee($event)" required #fee />
+      </div>
+
+      <div class="file-input form-field">
+        <label>Profile Photo (Ex. 21CS-PROFILE)</label>
+        <br>
+        <input type="file" formControlName="profilePhoto" (change)="setProfile($event)" required #profile />
+      </div>
+
+
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Give a short story about you</mat-label>
         <textarea matInput placeholder="Ex. It makes me feel..." formControlName="shortStory"></textarea>
       </mat-form-field>
 
     </form>
     <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="onSubmit()">Submit</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-button matStepperPrevious class="button">Back</button>
+      <button mat-button type="submit" (click)="onSubmit()" class="button">Submit</button>
+      <button mat-button (click)="stepper.reset()" class="button">Reset</button>
 
     </div>
   </mat-step>
