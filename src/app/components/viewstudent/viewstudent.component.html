@@ -16,10 +16,10 @@
         <h3>{{student.school}}</h3>
         <h3>{{student.collegeName}}</h3>
         <h3>{{student.course}} {{student.yearOfStudy}}</h3>
-        <h3>Total funding needed : {{student.fundRequired}}</h3>
+        <h3>Total funding needed : Rs. {{student.fundRequired}}</h3>
       </div>
       <div class="slider-section">
-        <label class="example-value-label">Amount : {{value}} / {{balanceAmount}}</label>
+        <label class="example-value-label">Amount :Rs. {{value}} / Rs. {{balanceAmount}}</label>
         <br>
         <mat-slider class="example-margin" [max]="balanceAmount" min=100 step=100>
           <input matSliderThumb [(ngModel)]="value">

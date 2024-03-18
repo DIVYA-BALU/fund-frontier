@@ -83,7 +83,6 @@ export class ViewstudentComponent {
     this.loginService.getRole().subscribe(
       (data) => {
           this.role = data;
-          console.log(data);
           
       }
     )
@@ -112,8 +111,6 @@ export class ViewstudentComponent {
           handler: (response: any) => {
 
             if (response.razorpay_payment_id) {
-              console.log('Payment successful:', response.razorpay_payment_id);
-              console.log(this.funderEmail);
 
               this.funds.funderEmail = this.funderEmail;
               this.funds.studentEmail = this.student.email.email;
