@@ -25,7 +25,6 @@ export class HomeComponent {
   story!: Successstory;
   getStory() {
     this.studentService.getstories(0, 1).subscribe((response) => {
-      console.log(response);
       this.story = response.content[0];
     })
   }

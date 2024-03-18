@@ -15,10 +15,9 @@ export class UpdatefunderprofileComponent {
   constructor(private fundersService: FundersService,
     private fundsService: FundsService,
     private studentService: StudentService,
-   ) { }
+  ) { }
   ngOnInit() {
     this.getFunder();
-    this.findStudents();
   }
 
   funder: Funder = {
@@ -55,20 +54,6 @@ export class UpdatefunderprofileComponent {
 
   students: Studentdetails[] = [];
 
-  findStudents() {
-    this.fundsService.getStudentsByFunder(this.funder.email).subscribe(
-      (response) => {
-        response.forEach(
-          (data) => {
-            this.studentService.viewStudent(data.studentEmail).subscribe(
-              (value) => {
-                this.students.push(value);
-              }
-            )
-          }
-        )
-      }
-    )
-  }
+
 
 }

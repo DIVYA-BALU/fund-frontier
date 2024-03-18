@@ -53,6 +53,7 @@ import { UpdatestudentprofileComponent } from './components/updatestudentprofile
 import { StorycreationComponent } from './components/storycreation/storycreation.component';
 import { UpdatefunderprofileComponent } from './components/updatefunderprofile/updatefunderprofile.component';
 import { FundedstudentsComponent } from './components/fundedstudents/fundedstudents.component';
+import {MatStepperModule} from '@angular/material/stepper';
 
 
 @NgModule({
@@ -112,7 +113,8 @@ import { FundedstudentsComponent } from './components/fundedstudents/fundedstude
     MatTableModule,
     MatPaginatorModule,
     MatProgressBarModule,
-    MatSliderModule
+    MatSliderModule,
+    MatStepperModule
   ],
   providers: [
     {

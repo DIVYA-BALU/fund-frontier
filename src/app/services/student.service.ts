@@ -78,7 +78,6 @@ export class StudentService {
     name: string,
     student: Studentdetails
   ): Observable<Studentdetails> {
-    console.log(student);
 
     return this.http.put<Studentdetails>(
       `${this.studentUrl}/approved/${name}`,

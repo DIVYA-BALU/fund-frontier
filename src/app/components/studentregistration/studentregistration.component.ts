@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
-
+import Swal from 'sweetalert2';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-studentregistration',
@@ -13,12 +14,15 @@ export class StudentregistrationComponent {
 
   applicationForm!: FormGroup;
 
+  id: string = '';
   profile!: File;
   aadhar!: File;
   income!: File;
   fee!: File;
   idcard!: File;
 
+  @ViewChild('fileUpload', { static: false })
+  fileUpload!: ElementRef;
 
   constructor(
     private studentService: StudentService,
@@ -40,7 +44,7 @@ export class StudentregistrationComponent {
       gender: ['', Validators.required],
       countryOfBirth: ['', Validators.required],
       countryOfResidence: ['', Validators.required],
-      dateOfBirth: [new Date(), Validators.required],
+      dateOfBirth: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
@@ -55,39 +59,55 @@ export class StudentregistrationComponent {
       studentId: ['', Validators.required],
       fundRequired: ['', Validators.required],
       feeDetails: ['', Validators.required],
-      endDate: [new Date(), Validators.required],
-      shortStory: ['', Validators.required],
+      endDate: ['', Validators.required],
+      shortStory: ['', Validators.required]
     });
   }
 
-  setProfile(event: any) {
-    this.profile = event.target.files[0];
+  setProfile(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.profile = fileInput.files[0];
+      this.fileValidation(this.profile, 'PROFILE');
+    }
   }
 
-  setAadhar(event: any) {
-    this.aadhar = event.target.files[0];
+  setAadhar(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.aadhar = fileInput.files[0];
+      this.fileValidation(this.aadhar, 'AADHAR');
+    }
   }
 
-  setIncome(event: any) {
-    this.income = event.target.files[0];
+  setIncome(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.income = fileInput.files[0];
+      this.fileValidation(this.income, 'INCOME');
+    }
   }
 
-  setIdcard(event: any) {
-    this.idcard = event.target.files[0];
+  setIdcard(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.idcard = fileInput.files[0];
+      this.fileValidation(this.idcard, 'IDCARD');
+    }
   }
 
-  setFee(event: any) {
-    this.fee = event.target.files[0];
+  setFee(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.fee = fileInput.files[0];
+      this.fileValidation(this.fee, 'FEE');
+    }
   }
-
 
 
   formdata: FormData = new FormData();
 
   onSubmit() {
-
-    console.log(this.applicationForm.value);
-    console.log(new Date(this.applicationForm.value.dateOfBirth).toISOString());
 
     this.formdata.append('profilePhoto', this.profile),
       this.formdata.append('firstName', this.applicationForm.value.firstName),
@@ -120,6 +140,29 @@ export class StudentregistrationComponent {
         this.router.navigate(['/header/home'])
       }
     )
+  }
+
+
+
+  firstFormGroup = this.formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this.formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
+
+  fileValidation(file: File, name: string) {
+
+    if (file) {
+
+      if (file.name !== (`${this.id}-${name}.jpg` || `${this.id}-${name}.jpeg` || `${this.id}-${name}.png`)) {
+        Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');
+        if (this.fileUpload && this.fileUpload.nativeElement) {
+          const input = this.fileUpload.nativeElement as HTMLInputElement;
+          input.value = '';
+        }
+      }
+    }
   }
 
 }
