@@ -54,7 +54,7 @@ import { StorycreationComponent } from './components/storycreation/storycreation
 import { UpdatefunderprofileComponent } from './components/updatefunderprofile/updatefunderprofile.component';
 import { FundedstudentsComponent } from './components/fundedstudents/fundedstudents.component';
 import {MatStepperModule} from '@angular/material/stepper';
-
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -114,7 +114,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatPaginatorModule,
     MatProgressBarModule,
     MatSliderModule,
-    MatStepperModule
+    MatStepperModule,
+    MatRadioModule
   ],
   providers: [
     {

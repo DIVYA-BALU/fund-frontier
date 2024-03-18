@@ -138,7 +138,7 @@ const routes: Routes = [
 
       },
       {
-        path: "studententregistration",
+        path: "studentregistration",
         component: StudentregistrationComponent
       }
     ]

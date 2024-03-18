@@ -8,7 +8,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class HeaderComponent {
 
-  role!: string;
+  role: string = '';
   loggedin: boolean = false;
   constructor(private loginService: LoginService) {
 

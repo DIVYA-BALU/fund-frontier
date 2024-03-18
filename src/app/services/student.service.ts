@@ -113,4 +113,8 @@ export class StudentService {
   addStory(story: Successstory): Observable<Successstory> {
     return this.http.post<Successstory>(`${this.storyUrl}/save`, story);
   }
+
+  findStudent(email: string): Observable<Studentdetails> {
+    return this.http.get<Studentdetails>(`${this.studentUrl}/get/${email}`);
+  }
 }

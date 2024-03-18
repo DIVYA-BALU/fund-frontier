@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
+import { StudentService } from 'src/app/services/student.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +13,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService, private router: Router, private studentService: StudentService) { }
 
   onSubmit(): void {
     this.loginService.login(this.email, this.password).subscribe({
@@ -20,7 +21,22 @@ export class LoginComponent {
         this.loginService.loggedin(true, response.token);
         this.loginService.getUser();
         this.loginService.getuserEmail()
-        this.router.navigate(['header/home'])
+        this.loginService.getRole().subscribe({
+          next: (value) => {
+            if(value === 'STUDENT'){
+              this.studentService.findStudent(this.email).subscribe({
+                next: value => {
+                  if(value === null)
+                    this.router.navigate(['header/studentregistration']);
+                  else
+                  this.router.navigate(['header/home']);
+                }
+              })
+            }
+            else 
+            this.router.navigate(['header/home']);
+          }
+        })
       },
       error: (error) => {
         Swal.fire('Oops...', 'Something went wrong!, Please check your credentials', 'error');

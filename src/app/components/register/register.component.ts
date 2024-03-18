@@ -13,6 +13,7 @@ export class RegisterComponent {
 
   registerForm!: FormGroup;
 
+  role: string = '';
   constructor(
     private registerService: RegisterService,
     private formBuilder: FormBuilder,
@@ -25,23 +26,31 @@ export class RegisterComponent {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      role: ['', Validators.required],
+      role: [['FUNDER'], [Validators.required]]
     });
+
   }
 
   onSubmit() {
+
     this.registerService.register(this.registerForm.value).subscribe(
       {
         next: (data) => {
-      Swal.fire("Success!", "Registration successful!", "success").then(() => {
-        this.router.navigate(['header/login']);
-      })
-    },
-    error: (respose) =>{
-        if(respose.status === 400) {
-          Swal.fire("Error!", "Email already exist!", "error");
+          Swal.fire("Success!", "Registration successful!", "success").then(() => {
+            if(this.registerForm.value.role === 'FUNDER')
+              this.router.navigate(['header/login']);
+            else
+              this.router.navigate(['/header/studentregistration']);
+          })
+        },
+        error: (respose) => {
+          if (respose.status === 400) {
+            Swal.fire("Error!", "Email already exist!", "error");
+          }
         }
-    }
-  });
+      });
   }
+
+
+
 }

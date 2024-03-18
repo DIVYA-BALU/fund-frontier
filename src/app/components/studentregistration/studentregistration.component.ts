@@ -172,8 +172,8 @@ export class StudentregistrationComponent {
 
     this.formdata = this.mergeFormValues();
 
-    if (this.aadhar === undefined || this.income === undefined || this.profile === undefined || this.fee === undefined || this.idcard === undefined) {
-      Swal.fire('Warning', 'File not added', 'warning');
+    if(this.aadhar === undefined || this.income === undefined || this.profile === undefined || this.fee === undefined || this.idcard === undefined) {
+      Swal.fire('Warning','File not added','warning');
       return;
     }
 
