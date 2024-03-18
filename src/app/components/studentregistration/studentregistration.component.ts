@@ -12,7 +12,6 @@ import { ViewChild } from '@angular/core';
 })
 export class StudentregistrationComponent {
 
-  applicationForm!: FormGroup;
 
   profile!: File;
   aadhar!: File;
@@ -36,6 +35,18 @@ export class StudentregistrationComponent {
   @ViewChild('profile')
   profileproof!: ElementRef;
 
+  personalDetailsForm!: FormGroup;
+  academicForm!: FormGroup;
+  proofsForm!: FormGroup
+
+  firstFormGroup = this.formBuilder.group({
+    firstCtrl: ['', Validators.required],
+  });
+  secondFormGroup = this.formBuilder.group({
+    secondCtrl: ['', Validators.required],
+  });
+
+
   constructor(
     private studentService: StudentService,
     private router: Router,
@@ -43,12 +54,9 @@ export class StudentregistrationComponent {
   ) { }
 
 
-
-
-
   ngOnInit() {
-    this.applicationForm = this.formBuilder.group({
-      profilePhoto: ['', Validators.required],
+
+    this.personalDetailsForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -60,21 +68,29 @@ export class StudentregistrationComponent {
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      zipCode: ['', Validators.required],
+      zipCode: ['', Validators.required]
+    });
+
+    this.academicForm = this.formBuilder.group({
       school: ['', Validators.required],
-      aadharCardProof: ['', Validators.required],
-      incomeProof: ['', Validators.required],
       collegeName: ['', Validators.required],
       yearOfStudy: ['', Validators.required],
       course: ['', Validators.required],
-      studentIdentityProof: ['', Validators.required],
       studentId: ['', Validators.required],
       fundRequired: ['', Validators.required],
-      feeDetails: ['', Validators.required],
-      endDate: ['', Validators.required],
+      endDate: ['', Validators.required]
+    });
+
+    this.proofsForm = this.formBuilder.group({
+      aadharCardProof: [''],
+      incomeProof: [''],
+      studentIdentityProof: [''],
+      feeDetails: [''],
+      profilePhoto: [''],
       shortStory: ['', Validators.required]
     });
   }
+
 
   setProfile(event: Event) {
     const fileInput = event.target as HTMLInputElement;
@@ -119,33 +135,47 @@ export class StudentregistrationComponent {
 
   formdata: FormData = new FormData();
 
-  onSubmit() {    
+  mergeFormValues() {
 
-    this.formdata.append('profilePhoto', this.profile),
-      this.formdata.append('firstName', this.applicationForm.value.firstName),
-      this.formdata.append('lastName', this.applicationForm.controls['lastName'].value),
-      this.formdata.append('email', this.applicationForm.controls['email'].value),
-      this.formdata.append('phoneNumber', this.applicationForm.controls['phoneNumber'].value),
-      this.formdata.append('gender', this.applicationForm.controls['gender'].value),
-      this.formdata.append('countryOfBirth', this.applicationForm.value.countryOfBirth),
-      this.formdata.append('countryOfResidence', this.applicationForm.controls['countryOfResidence'].value),
-      this.formdata.append('dateOfBirth', this.applicationForm.controls['dateOfBirth'].value.toISOString()),
-      this.formdata.append('address', this.applicationForm.controls['address'].value),
-      this.formdata.append('city', this.applicationForm.controls['city'].value),
-      this.formdata.append('state', this.applicationForm.controls['state'].value),
-      this.formdata.append('zipCode', this.applicationForm.controls['zipCode'].value),
-      this.formdata.append('school', this.applicationForm.controls['school'].value),
-      this.formdata.append('aadharCardProof', this.aadhar),
-      this.formdata.append('incomeProof', this.income),
-      this.formdata.append('collegeName', this.applicationForm.controls['collegeName'].value),
-      this.formdata.append('yearOfStudy',this.applicationForm.value.yearOfStudy),
-      this.formdata.append('course', this.applicationForm.controls['course'].value),
-      this.formdata.append('studentIdentityProof', this.idcard),
-      this.formdata.append('studentId', this.applicationForm.controls['studentId'].value),
-      this.formdata.append('fundRequired', this.applicationForm.controls['fundRequired'].value),
-      this.formdata.append('feeDetails', this.fee),
-      this.formdata.append('endDate', this.applicationForm.controls['endDate'].value.toISOString()),
-      this.formdata.append('shortStory', this.applicationForm.controls['shortStory'].value);
+    const applicationFormValues = {
+      ...this.personalDetailsForm.value,
+      dateOfBirth: this.personalDetailsForm.value.dateOfBirth.toISOString()
+    };
+
+    const academicFormValues = {
+      ...this.academicForm.value,
+      endDate: this.academicForm.value.endDate.toISOString()
+    };
+
+    const proofsFormValues = {
+      ...this.proofsForm.value
+    };
+
+    proofsFormValues['aadharCardProof'] = this.aadhar;
+    proofsFormValues['incomeProof'] = this.income;
+    proofsFormValues['feeDetails'] = this.fee;
+    proofsFormValues['studentIdentityProof'] = this.idcard;
+    proofsFormValues['profilePhoto'] = this.profile;
+
+    const mergedFormValues = {
+      ...applicationFormValues,
+      ...academicFormValues,
+      ...proofsFormValues
+    };
+
+    return mergedFormValues;
+  }
+
+
+
+  onSubmit() {
+
+    this.formdata = this.mergeFormValues();
+
+    if (this.aadhar === undefined || this.income === undefined || this.profile === undefined || this.fee === undefined || this.idcard === undefined) {
+      Swal.fire('Warning', 'File not added', 'warning');
+      return;
+    }
 
 
     this.studentService.saveApplication(this.formdata).subscribe(
@@ -156,17 +186,9 @@ export class StudentregistrationComponent {
   }
 
 
-
-  firstFormGroup = this.formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this.formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-
   fileValidation(file: File, name: string) {
 
-    const id = this.applicationForm.value.studentId;
+    const id = this.academicForm.value.studentId;
 
     if (file.name !== (`${id}-${name}.jpg` || `${id}-${name}.jpeg` || `${id}-${name}.png`)) {
       Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');

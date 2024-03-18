@@ -1,6 +1,6 @@
 <mat-stepper linear #stepper class="custom-stepper">
-  <mat-step [stepControl]="applicationForm" class="custom-step">
-    <form [formGroup]="applicationForm">
+  <mat-step [stepControl]="personalDetailsForm" class="custom-step">
+    <form [formGroup]="personalDetailsForm">
       <ng-template matStepLabel>Personal Details</ng-template>
 
       <mat-form-field class="form-field first" appearance="outline">
@@ -38,6 +38,11 @@
       </mat-form-field>
 
       <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Country of Residence</mat-label>
+        <input matInput placeholder="India" formControlName="countryOfResidence" required>
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
         <mat-label>Date of birth</mat-label>
         <input matInput [matDatepicker]="picker" [max]="today" formControlName="dateOfBirth" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -69,8 +74,8 @@
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="applicationForm" label="Academic Details" class="custom-step">
-    <form [formGroup]="applicationForm">
+  <mat-step [stepControl]="academicForm" label="Academic Details" class="custom-step">
+    <form [formGroup]="academicForm">
       <mat-form-field class="form-field first" appearance="outline">
         <mat-label>School of Study</mat-label>
         <input matInput formControlName="school" placeholder="St Mary's" required>
@@ -115,14 +120,14 @@
       </mat-form-field>
 
       <div>
-        <button mat-button matStepperPrevious class="button">Back</button>
-        <button mat-button matStepperNext class="button">Next</button>
+        <button mat-button matStepperPrevious type="button" class="button">Back</button>
+        <button mat-button matStepperNext type="button" class="button">Next</button>
       </div>
     </form>
   </mat-step>
-  <mat-step [stepControl]="applicationForm" (ngSubmit)="onSubmit()" class="custom-step">
+  <mat-step [stepControl]="proofsForm" (ngSubmit)="onSubmit()" class="custom-step">
     <ng-template matStepLabel>Proofs</ng-template>
-    <form [formGroup]="applicationForm">
+    <form [formGroup]="proofsForm">
       <div class="file-input form-field">
         <label> Aadhar proof (Ex. 21CS-AADHAR)</label>
         <br>
@@ -161,9 +166,9 @@
 
     </form>
     <div>
-      <button mat-button matStepperPrevious class="button">Back</button>
+      <button mat-button matStepperPrevious type="button" class="button">Back</button>
       <button mat-button type="submit" (click)="onSubmit()" class="button">Submit</button>
-      <button mat-button (click)="stepper.reset()" class="button">Reset</button>
+      <button mat-button (click)="stepper.reset()" type="reset" class="button">Reset</button>
 
     </div>
   </mat-step>
