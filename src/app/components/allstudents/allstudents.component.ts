@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { StudentService } from 'src/app/services/student.service';
+import { StorydialogComponent } from '../storydialog/storydialog.component';
 
 @Component({
   selector: 'app-allstudents',
@@ -43,7 +45,7 @@ export class AllstudentsComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
-  constructor(private studentService: StudentService, private cdref: ChangeDetectorRef) {
+  constructor(private studentService: StudentService, private cdref: ChangeDetectorRef, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource(this.studentdetails)
   }
 
@@ -59,6 +61,8 @@ export class AllstudentsComponent {
   }
 
   nextPage(e: PageEvent) {
+    console.log(e);
+
     this.getAllStudents(e.pageIndex, e.pageSize);
   }
 
@@ -66,6 +70,7 @@ export class AllstudentsComponent {
   getAllStudents(pageIndex: number, pageSize: number) {
     this.studentService.getAllStudents(pageIndex, pageSize).subscribe(
       (data) => {
+        console.log(data);
         this.studentdetails = data.content;
         this.paginator.length = data.totalElements;
         this.paginator.pageIndex = data.number;
@@ -75,6 +80,11 @@ export class AllstudentsComponent {
     )
   }
 
-
-
+  openDialog(story: string) {
+    this.dialog.open(StorydialogComponent, {
+      data: story,
+    });
+  }
 }
+
+

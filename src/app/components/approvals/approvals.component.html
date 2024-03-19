@@ -4,7 +4,9 @@
       <ng-container matColumnDef="profilePhoto">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Profile Photo</th>
         <td mat-cell *matCellDef="let row">
-          <img src="{{row.profilePhoto}}" alt="">
+          <a href={{row.profilePhoto}}>
+            View Profile
+          </a>
         </td>
       </ng-container>
 
@@ -77,12 +79,15 @@
 
       <ng-container matColumnDef="aadharCardProof">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Aadhar Card Proof</th>
-        <td mat-cell *matCellDef="let row"> <img src="{{row.aadharCardProof}}" alt=""></td>
+        <td mat-cell *matCellDef="let row"> <a href={{row.aadharCardProof}}>
+            View Aadhar </a> </td>
       </ng-container>
 
       <ng-container matColumnDef="incomeProof">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Income Proof</th>
-        <td mat-cell *matCellDef="let row"><img src="{{ row.incomeProof }}" alt=""></td>
+        <td mat-cell *matCellDef="let row"><a href={{row.incomeProof}}>
+            View Income
+          </a></td>
       </ng-container>
 
       <ng-container matColumnDef="collegeName">
@@ -97,7 +102,9 @@
 
       <ng-container matColumnDef="studentIdentityProof">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Student Identity Proof</th>
-        <td mat-cell *matCellDef="let row"><img src="{{ row.studentIdentityProof }}" alt=""></td>
+        <td mat-cell *matCellDef="let row"><a href={{row.studentIdentityProof}}>
+          View Identity
+        </a></td>
       </ng-container>
 
       <ng-container matColumnDef="course">
@@ -117,7 +124,9 @@
 
       <ng-container matColumnDef="feeDetails">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Fee Details</th>
-        <td mat-cell *matCellDef="let row"><img src="{{ row.feeDetails }}" alt=""></td>
+        <td mat-cell *matCellDef="let row"><a href={{row.feeDetails}}>
+          View Fee Details
+        </a></td>
       </ng-container>
 
       <ng-container matColumnDef="endDate">
@@ -127,7 +136,7 @@
 
       <ng-container matColumnDef="shortStory">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Short Story</th>
-        <td mat-cell *matCellDef="let row">{{ row.shortStory }}</td>
+        <td mat-cell *matCellDef="let row"><button mat-button (click)="openDialog(row.shortStory)">View Story</button></td>
       </ng-container>
 
       <ng-container matColumnDef="status">

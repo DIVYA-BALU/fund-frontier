@@ -39,6 +39,7 @@ export class UsersComponent {
   }
 
   nextPage(e: PageEvent) {
+    console.log(e.pageIndex, e.pageSize);    
     this.getAllUsers(e.pageIndex, e.pageSize);
   }
 
@@ -46,6 +47,8 @@ export class UsersComponent {
   getAllUsers(pageIndex: number, pageSize: number) {
     this.userService.getAllUsers(pageIndex, pageSize).subscribe(
       (data) => {
+        console.log(data);
+        
         this.users = data.content;
         this.paginator.length = data.totalElements;
         this.paginator.pageIndex = data.number;

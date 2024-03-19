@@ -172,8 +172,8 @@ export class StudentregistrationComponent {
 
     this.formdata = this.mergeFormValues();
 
-    if(this.aadhar === undefined || this.income === undefined || this.profile === undefined || this.fee === undefined || this.idcard === undefined) {
-      Swal.fire('Warning','File not added','warning');
+    if (this.aadhar === undefined || this.income === undefined || this.profile === undefined || this.fee === undefined || this.idcard === undefined) {
+      Swal.fire('Warning', 'File not added', 'warning');
       return;
     }
 
@@ -193,17 +193,26 @@ export class StudentregistrationComponent {
     if (file.name !== (`${id}-${name}.jpg` || `${id}-${name}.jpeg` || `${id}-${name}.png`)) {
       Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');
 
-      if (name === 'AADHAR') {
-        this.aadharproof.nativeElement.value = '';
-      } else if (name === 'INCOME') {
-        this.incomeproof.nativeElement.value = '';
-      } else if (name === 'PROFILE') {
-        this.profileproof.nativeElement.value = '';
-      } else if (name === 'IDCARD') {
-        this.idcardproof.nativeElement.value = '';
-      } else if (name === 'FEE') {
-        this.feeproof.nativeElement.value = '';
+      switch (name) {
+        case 'AADHAR':
+          this.aadharproof.nativeElement.value = '';
+          break;
+        case 'INCOME':
+          this.incomeproof.nativeElement.value = '';
+          break;
+        case 'PROFILE':
+          this.profileproof.nativeElement.value = '';
+          break;
+        case 'IDCARD':
+          this.idcardproof.nativeElement.value = '';
+          break;
+        case 'FEE':
+          this.feeproof.nativeElement.value = '';
+          break;
+        default:
+          break;
       }
+
 
     }
 

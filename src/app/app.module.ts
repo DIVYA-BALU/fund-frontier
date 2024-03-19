@@ -55,6 +55,7 @@ import { UpdatefunderprofileComponent } from './components/updatefunderprofile/u
 import { FundedstudentsComponent } from './components/fundedstudents/fundedstudents.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
+import { StorydialogComponent } from './components/storydialog/storydialog.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import {MatRadioModule} from '@angular/material/radio';
     StorycreationComponent,
     UpdatefunderprofileComponent,
     FundedstudentsComponent,
+    StorydialogComponent,
   ],
   imports: [
     BrowserModule,

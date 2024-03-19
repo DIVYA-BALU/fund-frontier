@@ -94,8 +94,8 @@ export class StudentService {
   ): Observable<Page<Studentdetails>> {
 
     const param = new HttpParams().
-      set('pageNo', pageIndex).
-      set('paseSize', pageSize);
+      set('pageIndex', pageIndex).
+      set('pageSize', pageSize);
 
     return this.http.get<Page<Studentdetails>>(`${this.studentUrl}/findall`, { params: param });
   }
