@@ -9,6 +9,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { RegisterService } from 'src/app/services/register.service';
 import { StudentService } from 'src/app/services/student.service';
 import { DialogData } from '../findstudents/findstudents.component';
+import Swal from 'sweetalert2';
 
 declare var Razorpay: any;
 
@@ -66,8 +67,6 @@ export class ViewstudentComponent {
   }
 
   close() {
-    console.log('close');
-
     this.dialogRef.close();
   }
 
@@ -121,13 +120,11 @@ export class ViewstudentComponent {
               this.fundsService.saveFund(this.funds).subscribe();
 
             } else {
-              console.log('Payment failed or was cancelled');
+              Swal.fire('Sorry','Payment has Failed','error');
             }
           },
           modal: {
             ondismiss: () => {
-              console.log('dismissed');
-
             }
           }
         }

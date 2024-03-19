@@ -25,6 +25,7 @@ import { UpdatestudentprofileComponent } from './components/updatestudentprofile
 import { StorycreationComponent } from './components/storycreation/storycreation.component';
 import { UpdatefunderprofileComponent } from './components/updatefunderprofile/updatefunderprofile.component';
 import { FundedstudentsComponent } from './components/fundedstudents/fundedstudents.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -110,6 +111,10 @@ const routes: Routes = [
         path: "adminprofile",
         component: AdminprofileComponent,
         children: [
+          {
+            path: "dashboard",
+            component: DashboardComponent
+          },
           {
             path: "users",
             component: UsersComponent

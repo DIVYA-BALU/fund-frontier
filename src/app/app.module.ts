@@ -56,6 +56,7 @@ import { FundedstudentsComponent } from './components/fundedstudents/fundedstude
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import { StorydialogComponent } from './components/storydialog/storydialog.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { StorydialogComponent } from './components/storydialog/storydialog.compo
     UpdatefunderprofileComponent,
     FundedstudentsComponent,
     StorydialogComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,7 +119,7 @@ import { StorydialogComponent } from './components/storydialog/storydialog.compo
     MatProgressBarModule,
     MatSliderModule,
     MatStepperModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   providers: [
     {

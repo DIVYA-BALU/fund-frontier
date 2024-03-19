@@ -43,7 +43,6 @@ export class StorycreationComponent {
   };
 
   onSubmit() {
-    console.log(this.storyForm.value);
     this.storyForm.value.email = this.email;
     this.studentService.addStory(this.storyForm.value).subscribe(
       (response) => {

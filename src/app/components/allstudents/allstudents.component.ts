@@ -61,7 +61,6 @@ export class AllstudentsComponent {
   }
 
   nextPage(e: PageEvent) {
-    console.log(e);
 
     this.getAllStudents(e.pageIndex, e.pageSize);
   }
@@ -70,7 +69,6 @@ export class AllstudentsComponent {
   getAllStudents(pageIndex: number, pageSize: number) {
     this.studentService.getAllStudents(pageIndex, pageSize).subscribe(
       (data) => {
-        console.log(data);
         this.studentdetails = data.content;
         this.paginator.length = data.totalElements;
         this.paginator.pageIndex = data.number;

@@ -90,11 +90,22 @@ export class UpdatestudentprofileComponent {
     this.getprofile();
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    let file: File | null = null;
+    if (fileInput.files) {
+      file = fileInput.files[0];
+    }
 
     if (file) {
-      this.studentService.updateProfile(file, this.student.email.email).subscribe(
+      const modifiedFileName = `${this.student.studentId}-PROFILE`; 
+
+      const fileExtension = file.name.split('.').pop(); 
+      const modifiedFileNameWithExtension = `${modifiedFileName}.${fileExtension}`; 
+
+      const modifiedFile = new File([file], modifiedFileNameWithExtension, { type: file.type });
+
+      this.studentService.updateProfile(modifiedFile, this.student.email.email).subscribe(
         (response) => {
           this.student = response;
         }

@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Funds } from '../model/funds';
 import { Page } from '../model/page';
 import { Observable } from 'rxjs/internal/Observable';
+import { Funderamount } from '../model/funderamount';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,14 @@ export class FundsService {
 
   getStudentsByFunder(email: string): Observable<Funds[]> {
     return this.http.get<Funds[]>(`${this.fundUrl}/findFunder/${email}`);
+  }
+  
+  getBar(): Observable<Funderamount[]> {
+    return this.http.get<Funderamount[]>(`${this.fundUrl}/bar`);
+  }
+
+  getPie(): Observable<any> {
+    return this.http.get(`${this.fundUrl}/pie`);
   }
 
 }

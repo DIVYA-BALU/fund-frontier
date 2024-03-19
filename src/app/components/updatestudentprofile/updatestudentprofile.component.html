@@ -2,7 +2,7 @@
     <div class="image">
         <img *ngIf="student.profilePhoto" [src]="student.profilePhoto" alt="Profile Photo">
         <mat-icon class="edit-icon" (click)="openFileInput()">edit</mat-icon>
-        <input type="file" id="fileinput" style="display: none" (change)="onFileSelected($event)">
+        <input type="file" id="fileinput"(change)="onFileSelected($event)">
     </div>
     <div class="education">
         <h2>Education</h2>
