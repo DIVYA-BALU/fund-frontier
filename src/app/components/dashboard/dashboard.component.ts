@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { Subscription } from 'rxjs';
 import { FundsService } from 'src/app/services/funds.service';
 Chart.register(...registerables);
 
@@ -12,13 +13,15 @@ Chart.register(...registerables);
 
 export class DashboardComponent {
 
+  subscription$: Subscription = new Subscription();
+
   fundersEmail: string[] = [];
   paidAmount: number[] = [];
 
   constructor(private http: HttpClient, private fundsService: FundsService) { }
 
   ngOnInit(): void {
-    this.fundsService.getBar()
+    this.subscription$.add(this.fundsService.getBar()
       .subscribe(data => {
 
         data.forEach((value) => {
@@ -27,11 +30,11 @@ export class DashboardComponent {
         })
 
         this.createBarChart(this.fundersEmail, this.paidAmount);
-      });
+      }));
 
-    this.fundsService.getPie().subscribe(data => {
+    this.subscription$.add(this.fundsService.getPie().subscribe(data => {
       this.renderPieChart(data);
-    });
+    }));
 
   }
 
@@ -74,6 +77,10 @@ export class DashboardComponent {
         }]
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }
 

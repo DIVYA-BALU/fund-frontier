@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { Successstory } from 'src/app/model/successstory';
 import { StudentService } from 'src/app/services/student.service';
@@ -11,6 +12,7 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class HomeComponent {
 
+  subscription$: Subscription = new Subscription();
   students: Studentdetails[] = [];
 
 
@@ -24,9 +26,9 @@ export class HomeComponent {
 
   story!: Successstory;
   getStory() {
-    this.studentService.getstories(0, 1).subscribe((response) => {
+    this.subscription$.add(this.studentService.getstories(0, 1).subscribe((response) => {
       this.story = response.content[0];
-    })
+    }))
   }
 
   getTestimonials() {
@@ -34,7 +36,7 @@ export class HomeComponent {
   }
 
   getAllStudents(pageNo: number, pageSize: number) {
-    this.studentService.getStudents(pageNo, pageSize).subscribe(
+    this.subscription$.add(this.studentService.getStudents(pageNo, pageSize).subscribe(
       (response) => {
         response.content.forEach(
           data => {
@@ -53,6 +55,10 @@ export class HomeComponent {
         )
 
       }
-    )
+    ))
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }   

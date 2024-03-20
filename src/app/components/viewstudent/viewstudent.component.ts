@@ -10,6 +10,7 @@ import { RegisterService } from 'src/app/services/register.service';
 import { StudentService } from 'src/app/services/student.service';
 import { DialogData } from '../findstudents/findstudents.component';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 declare var Razorpay: any;
 
@@ -20,6 +21,7 @@ declare var Razorpay: any;
 })
 export class ViewstudentComponent {
 
+  subscription$: Subscription = new Subscription();
 
 
   value: number = 0;
@@ -57,9 +59,9 @@ export class ViewstudentComponent {
 
 
   ngOnInit() {
-    this.studentService.viewStudent(this.student.email.email).subscribe((response) => {
+    this.subscription$.add(this.studentService.viewStudent(this.student.email.email).subscribe((response) => {
       this.indivualStudent = response;
-    })
+    }))
   }
 
   onNoClick() {
@@ -73,29 +75,29 @@ export class ViewstudentComponent {
 
   payment() {
 
-    this.loginService.getLoginStatus().subscribe(
+    this.subscription$.add(this.loginService.getLoginStatus().subscribe(
       data => {
         this.loginStatus = data;
       }
-    )
+    ))
 
-    this.loginService.getRole().subscribe(
+    this.subscription$.add(this.loginService.getRole().subscribe(
       (data) => {
           this.role = data;
           
       }
-    )
+    ))
     if (!this.loginStatus || this.role !== 'FUNDER') {
       this.dialogRef.close();
       this.router.navigate(['/header/register'])
     }
     else {
-      this.loginService.getuserEmail().subscribe(
+      this.subscription$.add(this.loginService.getuserEmail().subscribe(
         (data) => {
           this.funderEmail = data;
         }
       )
-
+      )
       if (this.funderEmail !== '') {
         const amount: number = ((this.value * 100) + ((7.5 / 100) * this.value) * 100);
 
@@ -117,7 +119,7 @@ export class ViewstudentComponent {
               this.funds.totalAmount = this.value + (7.5 * this.value) / 100 ;
               this.funds.studentAmount = this.value;
               this.funds.maintainenceAmount = (7.5 * this.value) / 100;
-              this.fundsService.saveFund(this.funds).subscribe();
+              this.subscription$.add(this.fundsService.saveFund(this.funds).subscribe());
 
             } else {
               Swal.fire('Sorry','Payment has Failed','error');
@@ -132,6 +134,10 @@ export class ViewstudentComponent {
         Razorpay.open(RazorpayOptions)
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }
 

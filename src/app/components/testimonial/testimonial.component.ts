@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Successstory } from 'src/app/model/successstory';
 import { StudentService } from 'src/app/services/student.service';
 
@@ -9,6 +10,7 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class TestimonialComponent {
 
+  subscription$: Subscription = new Subscription();
   pageNo: number = 0;
 
   constructor(private studentService: StudentService) {
@@ -16,16 +18,19 @@ export class TestimonialComponent {
   }
   stories: Successstory[] = [];
   getStories(pageNo: number, pageSize: number) {
-    this.studentService.getstories(pageNo, pageSize).subscribe((response) => {
+    this.subscription$.add(this.studentService.getstories(pageNo, pageSize).subscribe((response) => {
       response.content.forEach(data => {
         this.stories.push(data);
       });
-    })
+    }))
   }
 
   loadMore() {
     this.getStories(++this.pageNo, 3)
   }
 
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
+  }
 
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscribable, Subscription } from 'rxjs';
 import { Funder } from 'src/app/model/funder';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { FundersService } from 'src/app/services/funders.service';
@@ -12,10 +13,13 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class UpdatefunderprofileComponent {
 
+  subscription$: Subscription = new Subscription();
+
   constructor(private fundersService: FundersService,
     private fundsService: FundsService,
     private studentService: StudentService,
   ) { }
+  
   ngOnInit() {
     this.getFunder();
   }
@@ -37,23 +41,25 @@ export class UpdatefunderprofileComponent {
 
 
   getFunder() {
-    this.fundersService.getFunder().subscribe(
+    this.subscription$.add(this.fundersService.getFunder().subscribe(
       (response) => {
         this.funder = response
       }
-    )
+    ))
   }
 
   UpdateFunder() {
-    this.fundersService.updateFunder(this.funder).subscribe(
+    this.subscription$.add(this.fundersService.updateFunder(this.funder).subscribe(
       (data) => {
         this.funder = data;
       }
-    )
+    ))
   }
 
   students: Studentdetails[] = [];
 
-
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
+  }
 
 }

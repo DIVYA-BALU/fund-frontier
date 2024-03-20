@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { StudentService } from 'src/app/services/student.service';
 import { StorydialogComponent } from '../storydialog/storydialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-allstudents',
@@ -12,6 +13,9 @@ import { StorydialogComponent } from '../storydialog/storydialog.component';
   styleUrls: ['./allstudents.component.scss']
 })
 export class AllstudentsComponent {
+
+  subscription$: Subscription = new Subscription();
+
   studentdetails: Studentdetails[] = [];
   displayedColumns: string[] = [
     'profilePhoto',
@@ -50,11 +54,11 @@ export class AllstudentsComponent {
   }
 
   ngAfterViewInit() {
-    this.paginator.page.subscribe(
+    this.subscription$.add(this.paginator.page.subscribe(
       (data) => {
         this.getAllStudents(data.pageIndex, data.pageSize);
       }
-    )
+    ))
     this.getAllStudents(0, 3);
     this.cdref.detectChanges();
 
@@ -67,7 +71,7 @@ export class AllstudentsComponent {
 
 
   getAllStudents(pageIndex: number, pageSize: number) {
-    this.studentService.getAllStudents(pageIndex, pageSize).subscribe(
+    this.subscription$.add(this.studentService.getAllStudents(pageIndex, pageSize).subscribe(
       (data) => {
         this.studentdetails = data.content;
         this.paginator.length = data.totalElements;
@@ -75,13 +79,17 @@ export class AllstudentsComponent {
         this.paginator.pageSize = data.size;
         this.dataSource.data = this.studentdetails;
       }
-    )
+    ))
   }
 
   openDialog(story: string) {
     this.dialog.open(StorydialogComponent, {
       data: story,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }
 

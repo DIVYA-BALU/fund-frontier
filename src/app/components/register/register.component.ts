@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { RegisterService } from 'src/app/services/register.service';
 import Swal from 'sweetalert2';
 
@@ -11,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class RegisterComponent {
 
+  subscription$: Subscription = new Subscription();
   registerForm!: FormGroup;
 
   role: string = '';
@@ -33,7 +35,7 @@ export class RegisterComponent {
 
   onSubmit() {
 
-    this.registerService.register(this.registerForm.value).subscribe(
+    this.subscription$.add(this.registerService.register(this.registerForm.value).subscribe(
       {
         next: (data) => {
           Swal.fire("Success!", "Registration successful!", "success").then(() => {
@@ -48,9 +50,11 @@ export class RegisterComponent {
             Swal.fire("Error!", "Email already exist!", "error");
           }
         }
-      });
+      }));
   }
 
-
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
+  }
 
 }

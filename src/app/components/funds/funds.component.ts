@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscribable, Subscription } from 'rxjs';
 import { Funds } from 'src/app/model/funds';
 import { FundsService } from 'src/app/services/funds.service';
 
@@ -10,6 +11,8 @@ import { FundsService } from 'src/app/services/funds.service';
   styleUrls: ['./funds.component.scss']
 })
 export class FundsComponent {
+
+  subscription$: Subscription = new Subscription();
   funds: Funds[] = [];
   displayedColumns: string[] = [
     'funderEmail',
@@ -29,11 +32,11 @@ export class FundsComponent {
   }
 
   ngAfterViewInit() {
-    this.paginator.page.subscribe(
+    this.subscription$.add(this.paginator.page.subscribe(
       (data) => {
         this.getAllFunds(data.pageIndex, data.pageSize);
       }
-    )
+    ))
     this.getAllFunds(0, 3);
     this.cdref.detectChanges();
 
@@ -45,7 +48,7 @@ export class FundsComponent {
 
 
   getAllFunds(pageIndex: number, pageSize: number) {
-    this.fundsService.getAllFunds(pageIndex, pageSize).subscribe(
+    this.subscription$.add(this.fundsService.getAllFunds(pageIndex, pageSize).subscribe(
       (data) => {
         this.funds = data.content;
         this.paginator.length = data.totalElements;
@@ -53,6 +56,10 @@ export class FundsComponent {
         this.paginator.pageSize = data.size;
         this.dataSource.data = this.funds;
       }
-    )
+    ))
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
 import { StudentService } from 'src/app/services/student.service';
 
@@ -8,6 +9,7 @@ import { StudentService } from 'src/app/services/student.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  subscrption$: Subscription = new Subscription();
 
   role: string = '';
   loggedin: boolean = false;
@@ -17,19 +19,19 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.loginService.getLoginStatus().subscribe(
+    this.subscrption$.add(this.loginService.getLoginStatus().subscribe(
       (data) => {
         this.loggedin = data;
       }
-    )
+    ))
 
     if (this.loggedin) {
-      this.loginService.getRole().subscribe(
+      this.subscrption$.add(this.loginService.getRole().subscribe(
         (data) => {
           if(this.role === 'STUDENT') {
-          this.loginService.getuserEmail().subscribe({
+          this.subscrption$.add(this.loginService.getuserEmail().subscribe({
             next: response => {
-              this.studentService.findStudent(response).subscribe({
+              this.subscrption$.add(this.studentService.findStudent(response).subscribe({
                 next: value =>{
                   if(value === null) {
                     this.role = '';
@@ -38,16 +40,20 @@ export class HeaderComponent {
                     this.role = data;
                   }
                 }
-              })
+              }))
               
             }
-          })
+          }))
         } else {
           this.role = data;
         }
         }
-      )
+      ))
     }
+  }
+
+  ngOnDestroy() {
+    this.subscrption$.unsubscribe();
   }
 
 }

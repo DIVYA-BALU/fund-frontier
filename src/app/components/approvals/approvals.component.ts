@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { StudentService } from 'src/app/services/student.service';
 import { StorydialogComponent } from '../storydialog/storydialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-approvals',
@@ -13,6 +14,7 @@ import { StorydialogComponent } from '../storydialog/storydialog.component';
 })
 export class ApprovalsComponent {
 
+  subscription$: Subscription = new Subscription();
   studentdetails: Studentdetails[] = [];
   displayedColumns: string[] = [
     'profilePhoto',
@@ -52,11 +54,11 @@ export class ApprovalsComponent {
   }
 
   ngAfterViewInit() {
-    this.paginator.page.subscribe(
+    this.subscription$.add(this.paginator.page.subscribe(
       (data) => {
         this.getAllPending(data.pageIndex, data.pageSize);
       }
-    )
+    ))
     this.getAllPending(0, 3);
     this.cdref.detectChanges();
 
@@ -68,7 +70,7 @@ export class ApprovalsComponent {
 
 
   getAllPending(pageIndex: number, pageSize: number) {
-    this.studentService.getAllPending(pageIndex, pageSize).subscribe({
+    this.subscription$.add(this.studentService.getAllPending(pageIndex, pageSize).subscribe({
       next: (data) => {
         this.studentdetails = data.content;
         this.paginator.length = data.totalElements;
@@ -76,28 +78,32 @@ export class ApprovalsComponent {
         this.paginator.pageSize = data.size;
         this.dataSource.data = this.studentdetails;
       }
-    })
+    }))
   }
 
   setApproved(name: string, student: Studentdetails) {
-    this.studentService.setApproved(name, student).subscribe({
+    this.subscription$.add(this.studentService.setApproved(name, student).subscribe({
       next: () => {
         this.getAllPending(0, 3);
       }
-    })
+    }))
   }
 
   setRejected(student: Studentdetails) {
-    this.studentService.setRejected(student).subscribe(
+    this.subscription$.add(this.studentService.setRejected(student).subscribe(
       () => {
         this.getAllPending(0, 3);
       }
-    )
+    ))
   }
  
   openDialog(story: string) {
     this.dialog.open(StorydialogComponent, {
       data: story,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }

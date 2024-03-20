@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscribable, Subscription } from 'rxjs';
 import { Successstory } from 'src/app/model/successstory';
 import { LoginService } from 'src/app/services/login.service';
 import { StudentService } from 'src/app/services/student.service';
@@ -11,6 +12,7 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class StorycreationComponent {
 
+  subscription$: Subscription = new Subscription();
   constructor(
     private studentService: StudentService,
     private formBuilder: FormBuilder,
@@ -23,11 +25,11 @@ export class StorycreationComponent {
   email: string = '';
 
   ngOnInit() {
-    this.loginService.getuserEmail().subscribe(
+    this.subscription$.add(this.loginService.getuserEmail().subscribe(
       (data) => {
         this.email = data;        
       }
-    )
+    ))
     this.storyForm = this.formBuilder.group(
       {
         email : ['',Validators.required],
@@ -44,11 +46,15 @@ export class StorycreationComponent {
 
   onSubmit() {
     this.storyForm.value.email = this.email;
-    this.studentService.addStory(this.storyForm.value).subscribe(
+    this.subscription$.add(this.studentService.addStory(this.storyForm.value).subscribe(
       (response) => {
         this.story = response;
       }
-    )
+    ))
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscribable, Subscription } from 'rxjs';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { User } from 'src/app/model/user';
 import { LoginService } from 'src/app/services/login.service';
@@ -12,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UpdatestudentprofileComponent {
 
-
+  subscription$: Subscription = new Subscription();
   buttonClick: boolean = false;
   updateStatus: string = '';
   email: string = '';
@@ -65,25 +66,25 @@ export class UpdatestudentprofileComponent {
 
 
   getprofile() {
-    this.userService.getUser().subscribe(
+    this.subscription$.add(this.userService.getUser().subscribe(
       (data) => {
         this.email = data.email;
-        this.studentService.viewStudent(data.email).subscribe(
+        this.subscription$.add(this.studentService.viewStudent(data.email).subscribe(
           (response) => {
             const details = response;
-            this.studentService.getRaisedAmount(data.email).subscribe(
+            this.subscription$.add(this.studentService.getRaisedAmount(data.email).subscribe(
               (data) => {
                 details.fundRaised = data.amount;
                 details.raisedPercent = (data.amount / details.fundRequired) * 100;
                 this.student = details;
               }
-            )
+            ))
             this.student = response;
 
           }
-        )
+        ))
       }
-    )
+    ))
   }
 
   ngOnInit() {
@@ -105,11 +106,11 @@ export class UpdatestudentprofileComponent {
 
       const modifiedFile = new File([file], modifiedFileNameWithExtension, { type: file.type });
 
-      this.studentService.updateProfile(modifiedFile, this.student.email.email).subscribe(
+      this.subscription$.add(this.studentService.updateProfile(modifiedFile, this.student.email.email).subscribe(
         (response) => {
           this.student = response;
         }
-      )
+      ))
     }
   }
 
@@ -119,4 +120,7 @@ export class UpdatestudentprofileComponent {
     fileInput.click();
   }
 
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
+  }
 }

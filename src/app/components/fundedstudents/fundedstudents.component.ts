@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Funds } from 'src/app/model/funds';
 import { FundsService } from 'src/app/services/funds.service';
 import { LoginService } from 'src/app/services/login.service';
@@ -11,6 +12,7 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class FundedstudentsComponent {
 
+  subscription$: Subscription = new Subscription();
   constructor(private loginService: LoginService,
     private studentService: StudentService,
     private fundsService: FundsService) { }
@@ -18,7 +20,7 @@ export class FundedstudentsComponent {
     funds: Funds[] = [] ;
 
     ngOnInit() {
-      this.loginService.getuserEmail().subscribe({
+      this.subscription$.add(this.loginService.getuserEmail().subscribe({
         next: response => {
           this.fundsService.getStudentsByFunder(response).subscribe({
             next: data => {
@@ -27,6 +29,10 @@ export class FundedstudentsComponent {
           })
           
         }
-      })
+      }))
+    }
+
+    ngOnDestroy() {
+      this.subscription$.unsubscribe();
     }
 }

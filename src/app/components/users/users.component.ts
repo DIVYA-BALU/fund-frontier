@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { SubscriptSizing } from '@angular/material/form-field';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscribable, Subscription } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -11,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UsersComponent {
 
+  subscription$: Subscription = new Subscription();
   users: User[] = [];
   displayedColumns: string[] = [
     'firstName',
@@ -28,11 +31,11 @@ export class UsersComponent {
   }
 
   ngAfterViewInit() {
-    this.paginator.page.subscribe(
+    this.subscription$.add(this.paginator.page.subscribe(
       (data) => {
         this.getAllUsers(data.pageIndex, data.pageSize);
       }
-    )
+    ))
     this.getAllUsers(0, 3);
     this.cdref.detectChanges();
 
@@ -44,7 +47,7 @@ export class UsersComponent {
 
 
   getAllUsers(pageIndex: number, pageSize: number) {
-    this.userService.getAllUsers(pageIndex, pageSize).subscribe(
+    this.subscription$.add(this.userService.getAllUsers(pageIndex, pageSize).subscribe(
       (data) => {        
         this.users = data.content;
         this.paginator.length = data.totalElements;
@@ -52,7 +55,10 @@ export class UsersComponent {
         this.paginator.pageSize = data.size;
         this.dataSource.data = this.users;
       }
-    )
+    ))
   }
 
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
+  }
 }

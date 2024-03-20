@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Funder } from 'src/app/model/funder';
 import { FundersComponent } from '../funders/funders.component';
 import { FundersService } from 'src/app/services/funders.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-allfunders',
@@ -11,6 +12,9 @@ import { FundersService } from 'src/app/services/funders.service';
   styleUrls: ['./allfunders.component.scss']
 })
 export class AllfundersComponent {
+  
+  subscription$: Subscription = new Subscription();
+
   funders: Funder[] = [];
   displayedColumns: string[] = [
     'firstName',
@@ -34,11 +38,11 @@ export class AllfundersComponent {
   }
 
   ngAfterViewInit() {
-    this.paginator.page.subscribe(
+    this.subscription$.add(this.paginator.page.subscribe(
       (data) => {
         this.getAllFunders(data.pageIndex, data.pageSize);
       }
-    )
+    ))
     this.getAllFunders(0, 3);
     this.cdref.detectChanges();
 
@@ -50,7 +54,7 @@ export class AllfundersComponent {
 
 
   getAllFunders(pageIndex: number, pageSize: number) {
-    this.funderService.getAllFunders(pageIndex, pageSize).subscribe(
+    this.subscription$.add(this.funderService.getAllFunders(pageIndex, pageSize).subscribe(
       (data) => {
         this.funders = data.content;
         this.paginator.length = data.totalElements;
@@ -58,6 +62,10 @@ export class AllfundersComponent {
         this.paginator.pageSize = data.size;
         this.dataSource.data = this.funders;
       }
-    )
+    ))
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }

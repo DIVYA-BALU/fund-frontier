@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
 import Swal from 'sweetalert2';
 import { ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-studentregistration',
@@ -12,6 +13,7 @@ import { ViewChild } from '@angular/core';
 })
 export class StudentregistrationComponent {
 
+  subscription$: Subscription = new Subscription();
 
   profile!: File;
   aadhar!: File;
@@ -178,11 +180,11 @@ export class StudentregistrationComponent {
     }
 
 
-    this.studentService.saveApplication(this.formdata).subscribe(
+    this.subscription$.add(this.studentService.saveApplication(this.formdata).subscribe(
       (response) => {
         this.router.navigate(['/header/home'])
       }
-    )
+    ))
   }
 
 
@@ -216,5 +218,9 @@ export class StudentregistrationComponent {
 
     }
 
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 }

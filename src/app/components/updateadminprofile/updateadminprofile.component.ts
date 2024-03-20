@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Register } from 'src/app/model/register';
 import { Role } from 'src/app/model/role';
 import { User } from 'src/app/model/user';
@@ -12,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UpdateadminprofileComponent {
 
+  subscription$: Subscription = new Subscription();
   buttonClick: boolean = false;
   updateStatus: string = '';
   user: User = {
@@ -31,12 +33,12 @@ export class UpdateadminprofileComponent {
 
 
   getprofile() {
-    this.userService.getUser().subscribe(
+    this.subscription$.add(this.userService.getUser().subscribe(
       (data) => {
         this.user = data;
 
       }
-    )
+    ))
   }
 
   ngOnInit() {
@@ -56,10 +58,14 @@ export class UpdateadminprofileComponent {
   }
 
   updateUser() {
-    this.userService.updateProfile(this.user).subscribe((data) => {
+    this.subscription$.add(this.userService.updateProfile(this.user).subscribe((data) => {
       this.buttonClick = true;
       this.updateStatus = 'Profile Updated';
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscription$.unsubscribe();
   }
 
 }
