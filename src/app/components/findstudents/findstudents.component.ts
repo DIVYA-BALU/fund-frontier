@@ -33,12 +33,12 @@ export class FindstudentsComponent {
 
   getStudentsByYear() {
     this.students = [];
-    if(this.year){
+    if (this.year) {
       this.subscription$.add(this.studentService.getStudentsByYear(this.year).subscribe(
         (response) => {
-          response.forEach(data =>{
+          response.forEach(data => {
             this.addToStudents(data);
-           })
+          })
 
         }
       ))
@@ -47,12 +47,12 @@ export class FindstudentsComponent {
 
   getStudentsByCourse() {
     this.students = [];
-    if(this.course){
+    if (this.course) {
       this.subscription$.add(this.studentService.getStudentsByCourse(this.course).subscribe(
         (response) => {
-          response.forEach(data =>{
+          response.forEach(data => {
             this.addToStudents(data);
-           })
+          })
         }
       ))
     }
@@ -60,12 +60,12 @@ export class FindstudentsComponent {
 
   getStudentsByCollege() {
     this.students = [];
-    if(this.college){
+    if (this.college) {
       this.subscription$.add(this.studentService.getStudentsByCollege(this.college).subscribe(
         (response) => {
-         response.forEach(data =>{
-          this.addToStudents(data);
-         })
+          response.forEach(data => {
+            this.addToStudents(data);
+          })
         }
       ))
     }
@@ -87,13 +87,13 @@ export class FindstudentsComponent {
 
   addToStudents(data: Studentdetails) {
     let details: Studentdetails = data;
-            this.subscription$.add(this.studentService.getRaisedAmount(data.email.email).subscribe(
-              (data) => {
-                details.fundRaised = data.amount;
-                details.raisedPercent = (data.amount / details.fundRequired) * 100;
-                this.students.push(details);
-              }
-            ))
+    this.subscription$.add(this.studentService.getRaisedAmount(data.email.email).subscribe(
+      (data) => {
+        details.fundRaised = data.amount;
+        details.raisedPercent = (data.amount / details.fundRequired) * 100;
+        this.students.push(details);
+      }
+    ))
   }
 
   viewStudent(student: Studentdetails) {
@@ -113,10 +113,6 @@ export class FindstudentsComponent {
     this.getAllStudents(++this.pageNo, 3);
   }
 
-  getRaisedAmount(student: Studentdetails) {
-
-
-  }
 
   calculateProgressValue(student: Application) {
 
