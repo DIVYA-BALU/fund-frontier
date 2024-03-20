@@ -12,7 +12,9 @@ import { DialogData } from '../findstudents/findstudents.component';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
 
-declare var Razorpay: any;
+declare var Razorpay: {
+  open(options: RazorpayOptions): void;
+};
 
 @Component({
   selector: 'app-viewstudent',
@@ -109,7 +111,7 @@ export class ViewstudentComponent {
           theme: {
             color: '#092644'
           },
-          handler: (response: any) => {
+          handler: (response: RazorpayResponse) => {
 
             if (response.razorpay_payment_id) {
 
@@ -141,4 +143,21 @@ export class ViewstudentComponent {
   }
 }
 
+interface RazorpayResponse {
+  razorpay_payment_id: string;
+}
 
+
+interface RazorpayOptions {
+  description: string;
+  currency: string;
+  amount: number;
+  key: string;
+  theme: {
+    color: string;
+  };
+  handler: (response: RazorpayResponse) => void;
+  modal?: {
+    ondismiss?: () => void;
+  };
+}

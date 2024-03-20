@@ -33,8 +33,8 @@ export class FundsService {
     return this.http.get<Funderamount[]>(`${this.fundUrl}/bar`);
   }
 
-  getPie(): Observable<any> {
-    return this.http.get(`${this.fundUrl}/pie`);
+  getPie(): Observable<{ totalStudentAmount: number[], totalMaintenanceAmount: number[] }> {
+    return this.http.get<{ totalStudentAmount: number[], totalMaintenanceAmount: number[] }>(`${this.fundUrl}/pie`);
   }
 
 }

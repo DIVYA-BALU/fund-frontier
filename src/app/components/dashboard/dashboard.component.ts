@@ -62,7 +62,7 @@ export class DashboardComponent {
     });
   }
 
-  renderPieChart(data: any) {
+  renderPieChart(data: { totalStudentAmount: number[], totalMaintenanceAmount: number[] }) {
     const myPieChart = new Chart('pieChart', {
       type: 'pie',
       data: {
