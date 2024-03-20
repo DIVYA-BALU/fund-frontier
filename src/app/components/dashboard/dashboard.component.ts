@@ -44,7 +44,7 @@ export class DashboardComponent {
       data: {
         labels: this.fundersEmail,
         datasets: [{
-          label: 'Total Paid Amount',
+          label: 'Total Paid Amount (Rs.)',
           data: this.paidAmount,
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
@@ -66,7 +66,7 @@ export class DashboardComponent {
     const myPieChart = new Chart('pieChart', {
       type: 'pie',
       data: {
-        labels: ['Student Amount', 'Maintenance Amount'],
+        labels: ['Student Amount (Rs.)', 'Maintenance Amount (Rs.)'],
         datasets: [{
           data: [data.totalStudentAmount, data.totalMaintenanceAmount],
           backgroundColor: [
