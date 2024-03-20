@@ -5,17 +5,17 @@
 
       <mat-form-field class="form-field first" appearance="outline">
         <mat-label>First Name</mat-label>
-        <input matInput placeholder="John" formControlName="firstName" required>
+        <input matInput placeholder="John" formControlName="firstName" value={{this.firstName}} required>
       </mat-form-field>
 
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Last Name</mat-label>
-        <input matInput placeholder="Doe" formControlName="lastName" required>
+        <input matInput placeholder="Doe" formControlName="lastName" value={{this.lastName}} required>
       </mat-form-field>
 
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="divya@gmail.com" formControlName="email" required>
+        <input matInput value={{this.email}} formControlName="email" readonly required>
       </mat-form-field>
 
       <mat-form-field class="form-field" appearance="outline">

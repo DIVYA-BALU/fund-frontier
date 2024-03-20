@@ -5,6 +5,9 @@ import { StudentService } from 'src/app/services/student.service';
 import Swal from 'sweetalert2';
 import { ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LoginService } from 'src/app/services/login.service';
+import { RegisterService } from 'src/app/services/register.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-studentregistration',
@@ -21,6 +24,10 @@ export class StudentregistrationComponent {
   fee!: File;
   idcard!: File;
   today: Date = new Date();
+
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
 
   @ViewChild('aadhar')
   aadharproof!: ElementRef;
@@ -50,6 +57,8 @@ export class StudentregistrationComponent {
 
 
   constructor(
+    private loginService: LoginService,
+    private userService: UserService,
     private studentService: StudentService,
     private router: Router,
     private formBuilder: FormBuilder
@@ -58,10 +67,24 @@ export class StudentregistrationComponent {
 
   ngOnInit() {
 
+    this.subscription$.add(this.loginService.getuserEmail().subscribe({
+      next: (email) => {
+        console.log(email);
+        this.subscription$.add(this.userService.getUser().subscribe({
+          next: response => {
+            this.email = response.email;
+            this.firstName = response.firstName;
+            this.lastName = response.lastName;
+          }
+        })
+        )
+      }
+    })
+    )
     this.personalDetailsForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      firstName: [{value: this.firstName, disabled: true}, Validators.required],
+      lastName: [{value: this.lastName, disabled: true}, Validators.required],
+      email: [{value: this.email, disabled: true}, [Validators.required, Validators.email]],
       phoneNumber: ['', Validators.required],
       gender: ['', Validators.required],
       countryOfBirth: ['', Validators.required],
