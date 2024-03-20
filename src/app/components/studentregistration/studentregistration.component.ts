@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { StudentService } from 'src/app/services/student.service';
 import Swal from 'sweetalert2';
 import { ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
 import { RegisterService } from 'src/app/services/register.service';
 import { UserService } from 'src/app/services/user.service';
@@ -69,7 +69,6 @@ export class StudentregistrationComponent {
 
     this.subscription$.add(this.loginService.getuserEmail().subscribe({
       next: (email) => {
-        console.log(email);
         this.subscription$.add(this.userService.getUser().subscribe({
           next: response => {
             this.email = response.email;
@@ -82,9 +81,9 @@ export class StudentregistrationComponent {
     })
     )
     this.personalDetailsForm = this.formBuilder.group({
-      firstName: [{value: this.firstName, disabled: true}, Validators.required],
-      lastName: [{value: this.lastName, disabled: true}, Validators.required],
-      email: [{value: this.email, disabled: true}, [Validators.required, Validators.email]],
+      firstName: [{ value: this.firstName, disabled: true }, Validators.required],
+      lastName: [{ value: this.lastName, disabled: true }, Validators.required],
+      email: [{ value: this.email, disabled: true }, [Validators.required, Validators.email]],
       phoneNumber: ['', Validators.required],
       gender: ['', Validators.required],
       countryOfBirth: ['', Validators.required],
@@ -121,7 +120,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.profile = fileInput.files[0];
-      this.fileValidation(this.profile, 'PROFILE');
+      // this.fileValidation(this.profile, 'PROFILE');
     }
   }
 
@@ -129,7 +128,8 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.aadhar = fileInput.files[0];
-      this.fileValidation(this.aadhar, 'AADHAR');
+
+      // this.fileValidation(this.aadhar, 'AADHAR');
     }
   }
 
@@ -137,7 +137,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.income = fileInput.files[0];
-      this.fileValidation(this.income, 'INCOME');
+      // this.fileValidation(this.income, 'INCOME');
     }
   }
 
@@ -145,7 +145,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.idcard = fileInput.files[0];
-      this.fileValidation(this.idcard, 'IDCARD');
+      // this.fileValidation(this.idcard, 'IDCARD');
     }
   }
 
@@ -153,7 +153,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.fee = fileInput.files[0];
-      this.fileValidation(this.fee, 'FEE');
+      // this.fileValidation(this.fee, 'FEE');
     }
   }
 
@@ -164,6 +164,9 @@ export class StudentregistrationComponent {
 
     const applicationFormValues = {
       ...this.personalDetailsForm.value,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
       dateOfBirth: this.personalDetailsForm.value.dateOfBirth.toISOString()
     };
 
@@ -172,20 +175,12 @@ export class StudentregistrationComponent {
       endDate: this.academicForm.value.endDate.toISOString()
     };
 
-    const proofsFormValues = {
-      ...this.proofsForm.value
-    };
 
-    proofsFormValues['aadharCardProof'] = this.aadhar;
-    proofsFormValues['incomeProof'] = this.income;
-    proofsFormValues['feeDetails'] = this.fee;
-    proofsFormValues['studentIdentityProof'] = this.idcard;
-    proofsFormValues['profilePhoto'] = this.profile;
 
     const mergedFormValues = {
       ...applicationFormValues,
       ...academicFormValues,
-      ...proofsFormValues
+      shortStory: this.proofsForm.value.shortStory
     };
 
     return mergedFormValues;
@@ -195,17 +190,32 @@ export class StudentregistrationComponent {
 
   onSubmit() {
 
-    this.formdata = this.mergeFormValues();
-
     if (this.aadhar === undefined || this.income === undefined || this.profile === undefined || this.fee === undefined || this.idcard === undefined) {
       Swal.fire('Warning', 'File not added', 'warning');
       return;
     }
 
+    this.formdata = this.mergeFormValues();
 
-    this.subscription$.add(this.studentService.saveApplication(this.formdata).subscribe(
+    const formdata2: FormData = new FormData();
+
+    formdata2.append('file1', this.profile);
+    formdata2.append('file2', this.aadhar);
+    formdata2.append('file3', this.income);
+    formdata2.append('file4', this.idcard);
+    formdata2.append('file5', this.fee);
+
+
+
+    this.subscription$.add(this.studentService.save(this.formdata).subscribe(
       (response) => {
-        this.router.navigate(['/header/home'])
+        this.subscription$.add(this.studentService.saveFiles(formdata2, this.email).subscribe({
+          next: (value) => {
+            Swal.fire('Registered Successfully', 'Your form is under Review, let you know once Confirmed', 'success');
+            this.router.navigate(['/header/home']);
+          }
+        }))
+
       }
     ))
   }
@@ -214,6 +224,11 @@ export class StudentregistrationComponent {
   fileValidation(file: File, name: string) {
 
     const id = this.academicForm.value.studentId;
+    console.log(id);
+    
+    console.log(file.name);
+    console.log( `${id}-${name}.jpeg`);
+   
 
     if (file.name !== (`${id}-${name}.jpg` || `${id}-${name}.jpeg` || `${id}-${name}.png`)) {
       Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');

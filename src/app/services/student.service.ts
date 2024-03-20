@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Application } from '../model/application';
@@ -117,4 +117,15 @@ export class StudentService {
   findStudent(email: string): Observable<Studentdetails> {
     return this.http.get<Studentdetails>(`${this.studentUrl}/get/${email}`);
   }
+
+  save(application: FormData): Observable<Studentdetails> {
+    return this.http.post<Studentdetails>(`${this.studentUrl}/savestudent`, application);
+  }
+
+  saveFiles(formData: FormData, email: string): Observable<Studentdetails> {
+    return this.http.put<Studentdetails>(`${this.studentUrl}/updatestudent/${email}`, formData)
+  }
+
+
 }
+
