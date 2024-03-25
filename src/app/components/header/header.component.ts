@@ -22,18 +22,24 @@ export class HeaderComponent {
   ngOnInit() {
     this.subscrption$.add(this.loginService.getLoginStatus().subscribe(
       (data) => {
+        console.log(data);
+        
         this.loggedin = data;
       }
     ))
 
-    if (this.loggedin) {
       this.subscrption$.add(this.loginService.getRole().subscribe(
         (data) => {
-          if(this.role === 'STUDENT') {
+          console.log(data);
+          
+          if(data === 'STUDENT') {
           this.subscrption$.add(this.loginService.getuserEmail().subscribe({
             next: response => {
+              console.log(response);
+              
               this.subscrption$.add(this.studentService.findStudent(response).subscribe({
                 next: value =>{
+                  console.log(value);
                   if(value === null) {
                     this.role = '';
                   }
@@ -46,11 +52,11 @@ export class HeaderComponent {
             }
           }))
         } else {
+          console.log(data);
           this.role = data;
         }
         }
       ))
-    }
   }
   logout() {
     this.loginService.logout();

@@ -24,8 +24,7 @@ export class LoginService {
   constructor(private http: HttpClient) {
     if (localStorage.getItem('accessToken')) {
       this.getLoginStatus();
-      this.getRole();
-      this.getuserEmail();
+      this.getUser();
     }
   }
 
@@ -59,7 +58,6 @@ export class LoginService {
   }
 
   getRole() {
-    this.getUser();
     return this.userRole.asObservable();
   }
 
@@ -72,7 +70,9 @@ export class LoginService {
   }
 
   getLoginStatus() {
-    this.loginStatus.next(this.isAuthenticated());
+   this.loginStatus.next(this.isAuthenticated());
+   console.log(this.loginStatus.value);
+   
     return this.loginStatus.asObservable();
   }
 

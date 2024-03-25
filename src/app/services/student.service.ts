@@ -115,6 +115,8 @@ export class StudentService {
   }
 
   findStudent(email: string): Observable<Studentdetails> {
+    console.log("email  ", email);  
+    
     return this.http.get<Studentdetails>(`${this.studentUrl}/get/${email}`);
   }
 

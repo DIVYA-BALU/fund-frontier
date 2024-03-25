@@ -23,9 +23,10 @@ export class LoginComponent {
       next: (response) => {
         this.loginService.loggedin(true, response.token);
         this.loginService.getUser();
-        this.loginService.getuserEmail()
         this.subscription$.add(this.loginService.getRole().subscribe({
           next: (value) => {
+            console.log(value);
+            
             if(value === 'STUDENT'){
               this.subscription$.add(this.studentService.findStudent(this.email).subscribe({
                 next: value => {
@@ -36,9 +37,13 @@ export class LoginComponent {
                 }
               }))
             }
-            else 
-            this.router.navigate(['header/home']);
+            else {
+              console.log("logged");
+              
+              this.router.navigate(['header/home']);
           }
+            }
+            
         }))
       },
       error: (error) => {
