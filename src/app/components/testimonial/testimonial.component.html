@@ -12,4 +12,4 @@
     </mat-card-content>
   </mat-card>
 </div>
-<button mat-button (click)="loadMore()"> Load More </button>
+<button *ngIf="pageNo !== totalPages" mat-button (click)="loadMore()"> Load More </button>

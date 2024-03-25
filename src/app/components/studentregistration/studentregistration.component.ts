@@ -224,10 +224,6 @@ export class StudentregistrationComponent {
   fileValidation(file: File, name: string) {
 
     const id = this.academicForm.value.studentId;
-    console.log(id);
-    
-    console.log(file.name);
-    console.log( `${id}-${name}.jpeg`);
    
 
     if (file.name !== (`${id}-${name}.jpg` || `${id}-${name}.jpeg` || `${id}-${name}.png`)) {

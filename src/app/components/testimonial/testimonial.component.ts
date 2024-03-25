@@ -12,13 +12,15 @@ export class TestimonialComponent {
 
   subscription$: Subscription = new Subscription();
   pageNo: number = 0;
+  totalPages: number =0;
 
   constructor(private studentService: StudentService) {
-    this.getStories(0, 3)
+    this.getStories(0, 3);
   }
   stories: Successstory[] = [];
   getStories(pageNo: number, pageSize: number) {
     this.subscription$.add(this.studentService.getstories(pageNo, pageSize).subscribe((response) => {
+      this.totalPages = response.totalPages - 1;
       response.content.forEach(data => {
         this.stories.push(data);
       });
@@ -26,7 +28,7 @@ export class TestimonialComponent {
   }
 
   loadMore() {
-    this.getStories(++this.pageNo, 3)
+    this.getStories(++this.pageNo, 3);
   }
 
   ngOnDestroy() {

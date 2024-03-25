@@ -25,7 +25,6 @@ export class LoginComponent {
         this.loginService.getUser();
         this.subscription$.add(this.loginService.getRole().subscribe({
           next: (value) => {
-            console.log(value);
             
             if(value === 'STUDENT'){
               this.subscription$.add(this.studentService.findStudent(this.email).subscribe({
@@ -38,7 +37,6 @@ export class LoginComponent {
               }))
             }
             else {
-              console.log("logged");
               
               this.router.navigate(['header/home']);
           }

@@ -71,7 +71,6 @@ export class LoginService {
 
   getLoginStatus() {
    this.loginStatus.next(this.isAuthenticated());
-   console.log(this.loginStatus.value);
    
     return this.loginStatus.asObservable();
   }
