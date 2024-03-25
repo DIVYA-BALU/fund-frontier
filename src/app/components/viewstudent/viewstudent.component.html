@@ -1,4 +1,4 @@
-<body>
+<body [ngClass]="{'sprinkle-container': student.raisedPercent === 100}">
   <div>
     <button mat-icon-button (click)="onNoClick()">
       <mat-icon class="icon">clear</mat-icon>
@@ -19,18 +19,17 @@
         <h3>Total funding needed : Rs. {{student.fundRequired}}</h3>
       </div>
       <div class="slider-section">
-        <label class="example-value-label">Amount :Rs. {{value}} / Rs. {{balanceAmount}}</label>
+        <label [ngClass]="{'completed-student': student.raisedPercent === 100}" class="example-value-label">Amount :Rs. {{value}} / Rs. {{balanceAmount}}</label>
         <br>
-        <mat-slider class="example-margin" [max]="balanceAmount" min=100 step=100>
-          <input matSliderThumb [(ngModel)]="value">
+        <mat-slider [ngClass]="{'completed-student': student.raisedPercent === 100}" class="example-margin" [max]="balanceAmount" min=100 step=100>
+          <input  matSliderThumb [(ngModel)]="value">
         </mat-slider>
       </div>
-      <div class="student">
-        
+      <div class="student" [ngClass]="{'completed-student': student.raisedPercent === 100}">        
         <button mat-button class="pay-button" (click)="payment()"> Pay {{value}}</button> 
       </div>
       <div>
-        <i class="i">7.5% extra will be taken for maintainence</i>
+        <i class="i" [ngClass]="{'completed-student': student.raisedPercent === 100}">7.5% extra will be taken for maintainence</i>
       </div>
     </div>
     <div class="story-section">

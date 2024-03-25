@@ -26,6 +26,7 @@ export class FindstudentsComponent {
   }
   students: Studentdetails[] = [];
   pageNo: number = 0;
+  totalPages: number = 0;
 
   ngOnInit() {
     this.getAllStudents(0, 3);
@@ -74,6 +75,7 @@ export class FindstudentsComponent {
   getAllStudents(pageNo: number, pageSize: number) {
     this.subscription$.add(this.studentService.getStudents(pageNo, pageSize).subscribe(
       (response) => {
+        this.totalPages = response.totalPages - 1;
         response.content.forEach(
           data => {
             this.addToStudents(data);
