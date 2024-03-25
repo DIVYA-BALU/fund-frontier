@@ -3,7 +3,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="menu-bar">
-    <button mat-menu-item routerLink="login">Login</button>
+    <button mat-menu-item *ngIf="!loggedin" routerLink="login">Login</button>
     <button mat-menu-item routerLink="register">Register</button>
     <button mat-menu-item routerLink="findstudents">Find Students</button>
     <button mat-menu-item routerLink="home">Home</button>
@@ -12,6 +12,7 @@
     <button mat-menu-item routerLink="funders">For Funders</button>
     <button mat-menu-item routerLink="privacy">Privacy Policy</button>
     <button mat-menu-item routerLink="terms">Terms and Conditions</button>
+    <button mat-menu-item *ngIf="loggedin" (click)="logout()">Logout</button>
   </mat-menu>
   <span class="spacer">Fund Frontier</span>
   <div class="links">

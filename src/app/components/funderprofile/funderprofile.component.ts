@@ -15,14 +15,8 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class FunderprofileComponent {
 
-  constructor(
-    private router: Router,
-    private loginService: LoginService) { }
+  constructor() { }
 
-  
-  logout() {
-    this.loginService.logout();
-    this.router.navigate(['/header/home'])
-  }
+
 }
 

@@ -12,13 +12,8 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class StudentprofileComponent {
 
-  constructor(private loginService: LoginService,
-              private router: Router) { }
+  constructor() { }
 
-  logout() {
-    this.loginService.logout();
-    this.router.navigate(['/header/home'])
-  }
 
 
 
