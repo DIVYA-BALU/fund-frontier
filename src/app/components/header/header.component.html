@@ -22,6 +22,7 @@
     <a routerLink="funders">Funders</a>
     <div *ngIf="loggedin;then content"></div>
     <ng-template #content>
+      <a *ngIf="role === ''" routerLink="/header/studentregistration">Profile</a>
       <a *ngIf="role === 'FUNDER'" routerLink="funderprofile/updatefunder">Profile</a>
       <a *ngIf="role === 'STUDENT'" routerLink="studentprofile/updatestudent">Profile</a>
       <a *ngIf="role === 'ADMIN'" routerLink="adminprofile/editadminprofile">Profile</a>
