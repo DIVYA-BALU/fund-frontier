@@ -27,6 +27,7 @@
                 </div>
                 
                 <div class="action-div">
+                    <div>{{student.raisedPercent}} %</div>
                     <mat-progress-bar mode="determinate" [value]="student.raisedPercent"></mat-progress-bar>
                     <mat-card-actions>
                         <button mat-button (click)="viewStudent(student)"> Know More</button>

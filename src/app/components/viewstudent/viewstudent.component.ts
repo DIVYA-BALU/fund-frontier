@@ -121,7 +121,11 @@ export class ViewstudentComponent {
               this.funds.totalAmount = this.value + (7.5 * this.value) / 100 ;
               this.funds.studentAmount = this.value;
               this.funds.maintainenceAmount = (7.5 * this.value) / 100;
-              this.subscription$.add(this.fundsService.saveFund(this.funds).subscribe());
+              this.subscription$.add(this.fundsService.saveFund(this.funds).subscribe(
+                (response) =>{
+                  this.dialogRef.close();
+                }
+              ));
 
             } else {
               Swal.fire('Sorry','Payment has Failed','error');

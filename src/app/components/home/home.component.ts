@@ -45,6 +45,7 @@ export class HomeComponent {
               (data) => {
                 details.fundRaised = data.amount;
                 details.raisedPercent = (data.amount / details.fundRequired) * 100;
+                details.raisedPercent = Math.round(details.raisedPercent * 100) / 100;
                 this.students.push(details);
               }
             )

@@ -103,7 +103,7 @@ export class FindstudentsComponent {
       (data) => {
         details.fundRaised = data.amount;
         details.raisedPercent = (data.amount / details.fundRequired) * 100;
-        details.raisedPercent = Math.round(details.raisedPercent * 100) / 100
+        details.raisedPercent = Math.round(details.raisedPercent * 100) / 100;
         this.students.push(details);
       }
     ))
@@ -119,7 +119,12 @@ export class FindstudentsComponent {
 
     });
 
-    dialogRef.afterClosed().subscribe()
+    this.subscription$.add(dialogRef.afterClosed().subscribe(
+      (res) => {        
+        this.getAllStudents(++this.pageNo,3);
+      }
+    )
+    )
   }
 
   loadMore() {
