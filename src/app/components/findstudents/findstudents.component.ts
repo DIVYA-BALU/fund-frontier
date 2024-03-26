@@ -20,6 +20,9 @@ export class FindstudentsComponent {
   course: string = '';
   college: string = '';
   amountRaised: number = 0;
+  ypageNo: number = -1;
+  gpageNo: number = -1;
+  cpageNo: number = -1;
 
   constructor(private studentService: StudentService, private dialog: MatDialog) {
 
@@ -32,12 +35,16 @@ export class FindstudentsComponent {
     this.getAllStudents(0, 3);
   }
 
-  getStudentsByYear() {
+  getStudentsByYear(pageNo: number = 0, pageSize: number = 3) {
     this.students = [];
     if (this.year) {
-      this.subscription$.add(this.studentService.getStudentsByYear(this.year).subscribe(
+      console.log(this.year);
+      
+      this.subscription$.add(this.studentService.getStudentsByYear(pageNo, pageSize, this.year).subscribe(
         (response) => {
-          response.forEach(data => {
+
+          this.totalPages = response.totalPages - 1;
+          response.content.forEach(data => {
             this.addToStudents(data);
           })
 
@@ -46,12 +53,14 @@ export class FindstudentsComponent {
     }
   }
 
-  getStudentsByCourse() {
+  getStudentsByCourse(pageNo: number = 0, pageSize: number = 3) {
+
     this.students = [];
     if (this.course) {
-      this.subscription$.add(this.studentService.getStudentsByCourse(this.course).subscribe(
+      this.subscription$.add(this.studentService.getStudentsByCourse(pageNo, pageSize, this.course).subscribe(
         (response) => {
-          response.forEach(data => {
+          this.totalPages = response.totalPages - 1;
+          response.content.forEach(data => {
             this.addToStudents(data);
           })
         }
@@ -59,12 +68,13 @@ export class FindstudentsComponent {
     }
   }
 
-  getStudentsByCollege() {
+  getStudentsByCollege(pageNo: number = 0, pageSize: number = 3) {
     this.students = [];
     if (this.college) {
-      this.subscription$.add(this.studentService.getStudentsByCollege(this.college).subscribe(
+      this.subscription$.add(this.studentService.getStudentsByCollege(pageNo, pageSize, this.college,).subscribe(
         (response) => {
-          response.forEach(data => {
+          this.totalPages = response.totalPages - 1;
+          response.content.forEach(data => {
             this.addToStudents(data);
           })
         }
@@ -113,7 +123,16 @@ export class FindstudentsComponent {
   }
 
   loadMore() {
-    this.getAllStudents(++this.pageNo, 3);
+    if(this.course !== ''){
+      this.getStudentsByCourse(++this.gpageNo,3);
+    }else if(this.year !== '') {
+      this.getStudentsByYear(++this.ypageNo,3);
+    }else if(this.college !== '') {
+      this.getStudentsByCollege(++this.cpageNo,3);
+    }else{
+      this.getAllStudents(++this.pageNo, 3);
+    }
+    
   }
 
 

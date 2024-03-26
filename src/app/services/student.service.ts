@@ -45,21 +45,30 @@ export class StudentService {
 
   }
 
-  getStudentsByYear(year: string): Observable<Studentdetails[]> {
-    return this.http.get<Studentdetails[]>(
-      `${this.studentUrl}/searchbyyear/${year}`
+  getStudentsByYear(pageNo: number,pageSize: number, year: string): Observable<Page<Studentdetails>> {
+    const param = new HttpParams()
+      .set('pageNo', pageNo)
+      .set('pageSize', pageSize);
+    return this.http.get<Page<Studentdetails>>(
+      `${this.studentUrl}/searchbyyear/${year}`, { params: param }
     );
   }
 
-  getStudentsByCourse(course: string): Observable<Studentdetails[]> {
-    return this.http.get<Studentdetails[]>(
-      `${this.studentUrl}/searchbygroup/${course}`
+  getStudentsByCourse(pageNo: number,pageSize: number, course: string): Observable<Page<Studentdetails>> {
+    const param = new HttpParams()
+    .set('pageNo', pageNo)
+    .set('pageSize', pageSize);
+    return this.http.get<Page<Studentdetails>>(
+      `${this.studentUrl}/searchbygroup/${course}`, { params: param }
     );
   }
 
-  getStudentsByCollege(college: string): Observable<Studentdetails[]> {
-    return this.http.get<Studentdetails[]>(
-      `${this.studentUrl}/searchbycollege/${college}`
+  getStudentsByCollege(pageNo: number,pageSize: number, college: string): Observable<Page<Studentdetails>> {
+    const param = new HttpParams()
+      .set('pageNo', pageNo)
+      .set('pageSize', pageSize);
+    return this.http.get<Page<Studentdetails>>(
+      `${this.studentUrl}/searchbycollege/${college}`, { params: param }
     );
   }
 
