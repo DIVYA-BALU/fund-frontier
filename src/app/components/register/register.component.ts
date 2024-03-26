@@ -16,6 +16,9 @@ export class RegisterComponent {
   registerForm!: FormGroup;
 
   role: string = '';
+
+  StrongPasswordRegx: RegExp = /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/;
+
   constructor(
     private registerService: RegisterService,
     private formBuilder: FormBuilder,
@@ -27,7 +30,7 @@ export class RegisterComponent {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.pattern(this.StrongPasswordRegx)]],
       role: ['', [Validators.required]]
     });
 
@@ -39,7 +42,7 @@ export class RegisterComponent {
       {
         next: (data) => {
           Swal.fire("Success!", "Registration successful!", "success").then(() => {
-            if(this.registerForm.value.role === 'FUNDER')
+            if (this.registerForm.value.role === 'FUNDER')
               this.router.navigate(['header/login']);
             else
               this.router.navigate(['/header/studentregistration']);
