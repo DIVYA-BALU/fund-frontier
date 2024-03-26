@@ -12,14 +12,14 @@
     </mat-form-field>
     <mat-form-field class="example-form-field" class="search-input">
       <mat-label> Search By Course</mat-label>
-      <input matInput type="text" [(ngModel)]="course">
+      <input matInput type="text" [(ngModel)]="course" (keyup.enter)="getStudentsByCourse()">
       <button matSuffix mat-icon-button aria-label="search" (click)="getStudentsByCourse()">
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>
     <mat-form-field class="example-form-field" class="search-input">
       <mat-label> Search By College </mat-label>
-      <input matInput type="text" [(ngModel)]="college">
+      <input matInput type="text" [(ngModel)]="college" (keyup.enter)="getStudentsByCollege()">
       <button matSuffix mat-icon-button aria-label="search" (click)="getStudentsByCollege()">
         <mat-icon>search</mat-icon>
       </button>
