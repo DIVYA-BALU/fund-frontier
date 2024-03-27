@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscribable, Subscription } from 'rxjs';
 import { Successstory } from 'src/app/model/successstory';
 import { LoginService } from 'src/app/services/login.service';
@@ -16,7 +17,8 @@ export class StorycreationComponent {
   constructor(
     private studentService: StudentService,
     private formBuilder: FormBuilder,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router
   ) { }
 
   storyForm!: FormGroup;
@@ -49,6 +51,7 @@ export class StorycreationComponent {
     this.subscription$.add(this.studentService.addStory(this.storyForm.value).subscribe(
       (response) => {
         this.story = response;
+        this.router.navigate(['/header/testimonial'])
       }
     ))
   }
