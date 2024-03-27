@@ -24,9 +24,18 @@
         <mat-slider [ngClass]="{'completed-student': student.raisedPercent === 100}" class="example-margin" [max]="balanceAmount" min=100 step=100>
           <input  matSliderThumb [(ngModel)]="value">
         </mat-slider>
+        <mat-form-field [ngClass]="{'completed-student': student.raisedPercent === 100}" appearance="outline" class="pay-input">
+          <input matInput type="number" name="numberValue" [(ngModel)]="value" #numberInput="ngModel"
+                 min="100" [max]="balanceAmount" step="100">
+          <mat-error *ngIf="numberInput.invalid && (numberInput.dirty || numberInput.touched)">
+            <span *ngIf="validateMin(value)">Number must be at least 100</span>
+            <span *ngIf="validateMax(value, balanceAmount)">Number must be at most {{balanceAmount}} </span>
+            <span *ngIf="validateStep(value)">Number must increment by 100</span>
+          </mat-error>
+        </mat-form-field>
       </div>
       <div class="student" [ngClass]="{'completed-student': student.raisedPercent === 100}">        
-        <button mat-button class="pay-button" (click)="payment()"> Pay {{value}}</button> 
+        <button mat-raised-button [ngClass]="{'button-disabled': validate()}" [disabled] = "validate()" class="pay-button" (click)="payment()"> Pay {{value}}</button> 
       </div>
       <div>
         <i class="i" [ngClass]="{'completed-student': student.raisedPercent === 100}">7.5% extra will be taken for maintainence</i>

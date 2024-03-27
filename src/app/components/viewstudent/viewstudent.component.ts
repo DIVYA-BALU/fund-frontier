@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Application } from 'src/app/model/application';
 import { Funds } from 'src/app/model/funds';
 import { Studentdetails } from 'src/app/model/studentdetails';
 import { FundsService } from 'src/app/services/funds.service';
@@ -25,8 +24,8 @@ export class ViewstudentComponent {
 
   subscription$: Subscription = new Subscription();
 
+  value: number = 100;
 
-  value: number = 0;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dialogRef: MatDialogRef<ViewstudentComponent>,
@@ -85,8 +84,8 @@ export class ViewstudentComponent {
 
     this.subscription$.add(this.loginService.getRole().subscribe(
       (data) => {
-          this.role = data;
-          
+        this.role = data;
+
       }
     ))
     if (!this.loginStatus || this.role !== 'FUNDER') {
@@ -118,17 +117,17 @@ export class ViewstudentComponent {
               this.funds.funderEmail = this.funderEmail;
               this.funds.studentEmail = this.student.email.email;
               this.funds.date = new Date();
-              this.funds.totalAmount = this.value + (7.5 * this.value) / 100 ;
+              this.funds.totalAmount = this.value + (7.5 * this.value) / 100;
               this.funds.studentAmount = this.value;
               this.funds.maintainenceAmount = (7.5 * this.value) / 100;
               this.subscription$.add(this.fundsService.saveFund(this.funds).subscribe(
-                (response) =>{
+                (response) => {
                   this.dialogRef.close();
                 }
               ));
 
             } else {
-              Swal.fire('Sorry','Payment has Failed','error');
+              Swal.fire('Sorry', 'Payment has Failed', 'error');
             }
           },
           modal: {
@@ -140,6 +139,20 @@ export class ViewstudentComponent {
         Razorpay.open(RazorpayOptions)
       }
     }
+  }
+
+  validate() {
+    return this.validateStep(this.value) || this.validateMax(this.value,this.balanceAmount) || this.validateMin(this.value);
+  }
+
+  validateStep(val: number): boolean {
+    return val % 100 !== 0;
+  }
+  validateMax(val: number, max: number): boolean {
+    return val > max;
+  }
+  validateMin(val: number): boolean {
+    return val < 100;
   }
 
   ngOnDestroy() {
