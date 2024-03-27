@@ -26,6 +26,7 @@ import { StorycreationComponent } from './components/storycreation/storycreation
 import { UpdatefunderprofileComponent } from './components/updatefunderprofile/updatefunderprofile.component';
 import { FundedstudentsComponent } from './components/fundedstudents/fundedstudents.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -65,6 +66,10 @@ const routes: Routes = [
       {
         path: "studentprofile",
         component: StudentprofileComponent,
+        canActivate: [AuthGuard],
+        data: {
+          role: "STUDENT"
+        },
         children: [
           {
             path: "updatestudent",
@@ -73,12 +78,20 @@ const routes: Routes = [
           {
             path: "createstory",
             component: StorycreationComponent
+          },
+          {
+            path: "studentregistration",
+            component: StudentregistrationComponent
           }
         ]
       },
       {
         path: "funderprofile",
         component: FunderprofileComponent,
+        canActivate: [AuthGuard],
+        data: {
+          role: "FUNDER"
+        },
         children: [
           {
             path: "updatefunder",
@@ -110,8 +123,12 @@ const routes: Routes = [
       {
         path: "adminprofile",
         component: AdminprofileComponent,
+        canActivate: [AuthGuard],
+        data: {
+          role: "ADMIN"
+        },
         children: [
-          {
+          { 
             path: "dashboard",
             component: DashboardComponent
           },
@@ -141,11 +158,8 @@ const routes: Routes = [
           }
         ]
 
-      },
-      {
-        path: "studentregistration",
-        component: StudentregistrationComponent
       }
+      
     ]
   },
 

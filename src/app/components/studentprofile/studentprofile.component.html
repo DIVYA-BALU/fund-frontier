@@ -2,12 +2,17 @@
 <mat-drawer-container class="example-container">
   <mat-drawer mode="side" class="nav" opened>
     <mat-nav-list>
-      <a mat-list-item routerLink="updatestudent">
+      <a *ngIf="role === 'STUDENT'" mat-list-item routerLink="updatestudent">
         <span class="custom-drawer"><mat-icon>account_circle</mat-icon> Profile</span>
       </a>      
-      <a mat-list-item routerLink="/header/studentprofile/createstory">
+      <a *ngIf="role === 'STUDENT'" mat-list-item routerLink="/header/studentprofile/createstory">
         <span class="custom-drawer">
           <mat-icon>check_circle</mat-icon> Success Story
+        </span>
+      </a>
+      <a *ngIf="role === 'GUEST_STUDENT'" mat-list-item routerLink="/header/studentprofile/studentregistration">
+        <span class="custom-drawer">
+          <mat-icon>person_add</mat-icon> Registration
         </span>
       </a>
     </mat-nav-list>

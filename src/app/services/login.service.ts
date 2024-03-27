@@ -39,7 +39,8 @@ export class LoginService {
       this.isLoggedin = true;
       this.loginStatus.next(this.isLoggedin);
       localStorage.setItem("isloggedin", "true")
-      localStorage.setItem("accessToken", token)
+      localStorage.setItem("accessToken", token);
+      this.getUser();
     } else {
       this.isLoggedin = false;
       localStorage.setItem('isLoggedin', 'false');
@@ -51,6 +52,7 @@ export class LoginService {
   getUser() {
     this.http.get<User>(this.userUrl).subscribe(
       (response) => {
+        localStorage.setItem("role", response.role.role)
         this.userRole.next(response.role.role);
         this.userEmail.next(response.email);
       }

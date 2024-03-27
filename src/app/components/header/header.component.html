@@ -23,8 +23,8 @@
     <div *ngIf="loggedin;then content"></div>
     <ng-template #content>
       <a *ngIf="role === 'FUNDER'" routerLink="funderprofile/updatefunder">Profile</a>
-      <a *ngIf="role === 'STUDENT'" routerLink="studentprofile/updatestudent">Profile</a>
       <a *ngIf="role === 'ADMIN'" routerLink="adminprofile/editadminprofile">Profile</a>
+      <a *ngIf="role === 'STUDENT'" routerLink="studentprofile">Profile</a>
 
     </ng-template>
   </div>

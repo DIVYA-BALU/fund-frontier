@@ -14,7 +14,7 @@ export class HeaderComponent {
 
   role: string = '';
   loggedin: boolean = false;
-  isRegistered:boolean = false;
+  isRegistered: boolean = false;
   constructor(private loginService: LoginService, private studentService: StudentService, private router: Router) {
 
   }
@@ -22,36 +22,16 @@ export class HeaderComponent {
   ngOnInit() {
     this.subscrption$.add(this.loginService.getLoginStatus().subscribe(
       (data) => {
-        
+
         this.loggedin = data;
       }
     ))
 
-      this.subscrption$.add(this.loginService.getRole().subscribe(
-        (data) => {
-          
-          if(data === 'STUDENT') {
-          this.subscrption$.add(this.loginService.getuserEmail().subscribe({
-            next: response => {
-              
-              this.subscrption$.add(this.studentService.findStudent(response).subscribe({
-                next: value =>{
-                  if(value === null) {
-                    this.role = '';
-                  }
-                  else {
-                    this.role = data;
-                  }
-                }
-              }))
-              
-            }
-          }))
-        } else {
-          this.role = data;
-        }
-        }
-      ))
+    this.subscrption$.add(this.loginService.getRole().subscribe(
+      (data) => {
+        this.role = data;
+      }
+    ))
   }
   logout() {
     this.loginService.logout();

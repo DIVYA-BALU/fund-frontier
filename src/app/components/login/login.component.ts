@@ -22,7 +22,6 @@ export class LoginComponent {
     this.subscription$.add(this.loginService.login(this.email, this.password).subscribe({
       next: (response) => {
         this.loginService.loggedin(true, response.token);
-        this.loginService.getUser();
         this.subscription$.add(this.loginService.getRole().subscribe({
           next: (value) => {
             
@@ -30,7 +29,7 @@ export class LoginComponent {
               this.subscription$.add(this.studentService.findStudent(this.email).subscribe({
                 next: value => {
                   if(value === null)
-                    this.router.navigate(['header/studentregistration']);
+                    this.router.navigate(['header/home']);
                   else
                   this.router.navigate(['header/home']);
                 }
