@@ -27,6 +27,7 @@ import { UpdatefunderprofileComponent } from './components/updatefunderprofile/u
 import { FundedstudentsComponent } from './components/fundedstudents/fundedstudents.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,10 @@ const routes: Routes = [
           {
             path: "studentregistration",
             component: StudentregistrationComponent
+          },
+          {
+            path: "welcomestudent",
+            component: WelcomeComponent
           }
         ]
       },

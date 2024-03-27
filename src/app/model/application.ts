@@ -4,7 +4,7 @@ export interface Application {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
   gender: string;
   countryOfBirth: string;
   countryOfResidence: string;

@@ -57,6 +57,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import { StorydialogComponent } from './components/storydialog/storydialog.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     FundedstudentsComponent,
     StorydialogComponent,
     DashboardComponent,
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,

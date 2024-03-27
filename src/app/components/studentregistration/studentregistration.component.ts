@@ -48,13 +48,6 @@ export class StudentregistrationComponent {
   academicForm!: FormGroup;
   proofsForm!: FormGroup
 
-  firstFormGroup = this.formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this.formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-
 
   constructor(
     private loginService: LoginService,
@@ -120,7 +113,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.profile = fileInput.files[0];
-      // this.fileValidation(this.profile, 'PROFILE');
+      this.fileRename('PROFILE', this.profile);
     }
   }
 
@@ -128,8 +121,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.aadhar = fileInput.files[0];
-
-      // this.fileValidation(this.aadhar, 'AADHAR');
+      this.fileRename('AADHAR', this.aadhar);
     }
   }
 
@@ -137,7 +129,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.income = fileInput.files[0];
-      // this.fileValidation(this.income, 'INCOME');
+      this.fileRename('INCOME', this.income);
     }
   }
 
@@ -145,7 +137,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.idcard = fileInput.files[0];
-      // this.fileValidation(this.idcard, 'IDCARD');
+      this.fileRename('IDCARD', this.idcard);
     }
   }
 
@@ -153,7 +145,7 @@ export class StudentregistrationComponent {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       this.fee = fileInput.files[0];
-      // this.fileValidation(this.fee, 'FEE');
+      this.fileRename('FEE', this.fee);
     }
   }
 
@@ -206,7 +198,6 @@ export class StudentregistrationComponent {
     formdata2.append('file5', this.fee);
 
 
-
     this.subscription$.add(this.studentService.save(this.formdata).subscribe(
       (response) => {
         this.subscription$.add(this.studentService.saveFiles(formdata2, this.email).subscribe({
@@ -220,36 +211,34 @@ export class StudentregistrationComponent {
     ))
   }
 
+  fileRename(name: string, file: File) {
 
-  fileValidation(file: File, name: string) {
+    const id: string = this.academicForm.value.studentId;
+    const modifiedFileName = `${id}-${name}`;
 
-    const id = this.academicForm.value.studentId;
-   
+    const fileExtension = file.name.split('.').pop();
+    const modifiedFileNameWithExtension = `${modifiedFileName}.${fileExtension}`;
 
-    if (file.name !== (`${id}-${name}.jpg` || `${id}-${name}.jpeg` || `${id}-${name}.png`)) {
-      Swal.fire('Wrong format', `Should be your StudentID-${name}`, 'warning');
+    const modifiedFile = new File([file], modifiedFileNameWithExtension, { type: file.type });
 
-      switch (name) {
-        case 'AADHAR':
-          this.aadharproof.nativeElement.value = '';
-          break;
-        case 'INCOME':
-          this.incomeproof.nativeElement.value = '';
-          break;
-        case 'PROFILE':
-          this.profileproof.nativeElement.value = '';
-          break;
-        case 'IDCARD':
-          this.idcardproof.nativeElement.value = '';
-          break;
-        case 'FEE':
-          this.feeproof.nativeElement.value = '';
-          break;
-        default:
-          break;
-      }
-
-
+    switch (name) {
+      case 'AADHAR':
+        this.aadhar = modifiedFile;
+        break;
+      case 'INCOME':
+        this.income = modifiedFile;
+        break;
+      case 'PROFILE':
+        this.profile = modifiedFile;
+        break;
+      case 'IDCARD':
+        this.idcard = modifiedFile;
+        break;
+      case 'FEE':
+        this.fee = modifiedFile;
+        break;
+      default:
+        break;
     }
 
   }

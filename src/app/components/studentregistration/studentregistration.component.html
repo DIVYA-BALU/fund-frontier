@@ -66,7 +66,7 @@
 
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>Zip Code</mat-label>
-        <input matInput placeholder="641 653" formControlName="zipCode" required>
+        <input matInput type="number" placeholder="641 653" formControlName="zipCode" required>
       </mat-form-field>
 
       <div>
@@ -167,7 +167,7 @@
     </form>
     <div>
       <button mat-button matStepperPrevious type="button" class="button">Back</button>
-      <button mat-button type="submit" (click)="onSubmit()" class="button">Submit</button>
+      <button mat-button type="submit" (click)="onSubmit()" [ngClass]="{'button-disabled': proofsForm.invalid === true}" [disabled]="proofsForm.invalid" class="button">Submit</button>
       <button mat-button (click)="stepper.reset()" type="reset" class="button">Reset</button>
 
     </div>

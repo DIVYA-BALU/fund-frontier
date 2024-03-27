@@ -44,3 +44,8 @@ input[type="file"]::file-selector-button:active {
 .first {
     margin-top: 10px;
 }
+
+.button-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}

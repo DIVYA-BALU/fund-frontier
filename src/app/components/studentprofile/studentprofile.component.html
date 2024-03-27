@@ -2,6 +2,9 @@
 <mat-drawer-container class="example-container">
   <mat-drawer mode="side" class="nav" opened>
     <mat-nav-list>
+      <a mat-list-item routerLink="welcomestudent">
+        <span class="custom-drawer"><mat-icon>favorite</mat-icon> Welcome</span>
+      </a>  
       <a *ngIf="role === 'STUDENT'" mat-list-item routerLink="updatestudent">
         <span class="custom-drawer"><mat-icon>account_circle</mat-icon> Profile</span>
       </a>      

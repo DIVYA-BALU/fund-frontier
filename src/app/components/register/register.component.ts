@@ -42,10 +42,7 @@ export class RegisterComponent {
       {
         next: (data) => {
           Swal.fire("Success!", "Registration successful!", "success").then(() => {
-            if (this.registerForm.value.role === 'FUNDER')
               this.router.navigate(['header/login']);
-            else
-              this.router.navigate(['/header/studentregistration']);
           })
         },
         error: (respose) => {
